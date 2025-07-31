@@ -3,7 +3,7 @@ import axios from 'axios'
 
 
 const API = axios.create({
-  baseURL: import.meta.env.BASE_URI_API || 'http://localhost:5024/v1',
+  baseURL: import.meta.env.VITE_BASE_URI_API || 'http://localhost:5024/v1',
   timeout: 10000,
   withCredentials: true,
   headers: {
