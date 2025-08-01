@@ -1,15 +1,16 @@
 import type { ReactNode } from 'react';
+import React from 'react';
 
 type ButtonVariant = 'default' | 'primary' | 'danger' | 'icon';
 type ButtonSize = 'sm' | 'md' | 'lg' | 'ic';
 
 type ButtonProps = {
     title?: string;
-    type?: ButtonVariant;
+    variant?: ButtonVariant;
     size?: ButtonSize;
     disabled?: boolean;
     icon?: ReactNode;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>; // Thêm các props như onClick, type,...
 
 const variantClass: Record<ButtonVariant, string> = {
     default: 'bg-gray-500 hover:bg-gray-600 text-white',
@@ -25,20 +26,29 @@ const sizeClass: Record<ButtonSize, string> = {
     ic: 'p-2'
 };
 
-export const Button = ({
-    title,
-    type = 'default',
-    size = 'md',
-    disabled = false,
-    icon,
-}: ButtonProps) => {
-    const base = 'inline-flex items-center gap-2 rounded transition duration-200';
-    const finalClass = `${base} ${variantClass[type]} ${sizeClass[size]} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+    (
+        {
+            title,
+            variant = 'default',
+            size = 'md',
+            disabled = false,
+            icon,
+            className,
+            ...rest
+        },
+        ref
+    ) => {
+        const base = 'inline-flex items-center gap-2 rounded transition duration-200';
+        const finalClass = `${base} ${variantClass[variant]} ${sizeClass[size]} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} ${className ?? ''}`;
 
-    return (
-        <button className={finalClass} disabled={disabled}>
-            {icon && <span>{icon}</span>}
-            {title && <span>{title}</span>}
-        </button>
-    )
-}
+        return (
+            <button ref={ref} className={finalClass} disabled={disabled} {...rest}>
+                {icon && <span>{icon}</span>}
+                {title && <span>{title}</span>}
+            </button>
+        );
+    }
+);
+
+Button.displayName = 'Button';
