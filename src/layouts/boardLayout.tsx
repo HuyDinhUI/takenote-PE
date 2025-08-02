@@ -53,7 +53,7 @@ const BoardsLayout = ({ children }: Props) => {
   return (
     <div className="wrapper">
       <Header />
-      <div className="flex justify-center overflow-y-scroll max-h-[90vh] pt-5">
+      <div className="flex overflow-y-scroll max-h-[90vh] pt-5">
         <Sidebar items={sidebarItems} />
         {children}
       </div>
