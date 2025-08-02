@@ -1,6 +1,10 @@
 
-import type { ReactNode } from "react"
+import { Star } from "lucide-react"
+import { use, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
+import {IconStar,IconStarFilled} from '@tabler/icons-react'
+
+
 
 type BoardVariant = 'default' | 'primary'
 
@@ -12,6 +16,8 @@ export type BoardItemProps = {
 }
 
 export const Board = ({ type, title, img = '', href = '' }: BoardItemProps) => {
+
+    const [starred, setSarred] = useState(false)
 
     if (type === 'default') {
         return (
@@ -27,7 +33,16 @@ export const Board = ({ type, title, img = '', href = '' }: BoardItemProps) => {
             <Link to={href}>
                 <div className="flex flex-col">
                     <div className="h-[72px] w-full" style={{ backgroundImage: `url(${img})` }}>
-                        <div className="h-full w-full hover:bg-black/10"></div>
+                        <div className="h-full w-full hover:bg-black/10 group overflow-hidden relative">
+                            <button onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setSarred(!starred);
+                            }} className={`absolute top-2 right-2 bg-black/20 rounded p-1 text-white duration-300 transition-transform  delay-300 ${starred ? "opacity-100 translate-x-0" : "group-hover:opacity-100 translate-x-10 group-hover:translate-x-0"
+                                }`}>
+                                {!starred ? <IconStar size={18} /> : <IconStarFilled type="solid" size={18} color="yellow"/>}
+                            </button>
+                        </div>
                     </div>
                     <div className="p-2 flex items-center">
                         <span className="">{title}</span>
@@ -47,7 +62,6 @@ type BoardContainerProps = {
 export const BoardContainer = ({ icon, title, children }: BoardContainerProps) => {
     return (
         <div className="pb-13">
-            
             <div className="flex items-center gap-3 mb-5">
                 {icon}
                 <span className="font-bold text-[15px]">{title}</span>
@@ -66,7 +80,7 @@ type BoardWorkspaceProps = {
     icon?: ReactNode
 }
 
-export const BoardWorkspace = ({label,children,icon}: BoardWorkspaceProps) => {
+export const BoardWorkspace = ({ label, children, icon }: BoardWorkspaceProps) => {
 
     return (
         <div className="">
