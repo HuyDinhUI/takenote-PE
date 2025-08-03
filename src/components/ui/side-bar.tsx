@@ -45,7 +45,7 @@ export const Sidebar = ({items}:SidebarItemProps) => {
   
 
   return (
-    <aside className="w-70 max-h-[90vh] scroll-auto sticky top-0 overflow-auto ps-10 py-4 space-y-2">
+    <aside className="w-70 max-h-[90vh] scroll-auto sticky top-0 overflow-auto ps-7 py-4 space-y-2">
       {items.map((item, index) => {
         if (item.type === 'separator') {
           return item.label ? (
@@ -64,7 +64,7 @@ export const Sidebar = ({items}:SidebarItemProps) => {
           <div key={item.label} className="">
             <button
               onClick={() => hasSub && toggleMenu(item.label)}
-              className={`cursor-pointer w-full flex items-center justify-between px-3 py-2 rounded text-sm transition ${isActive ? "bg-blue-200/30 text-blue-800" : "hover:bg-gray-800/10"
+              className={`cursor-pointer w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition ${isActive ? "bg-blue-200/30 text-blue-800" : "hover:bg-gray-800/10"
                 }`}
             >
               <span className="flex items-center gap-2 flex-1">
