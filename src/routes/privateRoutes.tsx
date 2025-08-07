@@ -1,5 +1,5 @@
-import {lazy} from 'react'
-
+import { lazy } from 'react'
+import Guard from '@/routes/guard'
 
 const Boards = lazy(() => import('@/pages/main/boards'))
 const BoardsLayout = lazy(() => import('@/layouts/boardLayout'))
@@ -9,14 +9,14 @@ const Home = lazy(() => import('@/pages/main/home'))
 export const privateRoutes = [
     {
         path: '/:username/boards',
-        element: <BoardsLayout><Boards/></BoardsLayout>
+        element: <Guard><BoardsLayout><Boards /></BoardsLayout></Guard>
     },
     {
         path: '/templates',
-        element: <BoardsLayout><Templates/></BoardsLayout>
+        element: <Guard><BoardsLayout><Templates /></BoardsLayout></Guard>
     },
     {
         path: '/',
-        element: <BoardsLayout><Home/></BoardsLayout>
+        element: <Guard><BoardsLayout><Home /></BoardsLayout></Guard>
     }
 ]

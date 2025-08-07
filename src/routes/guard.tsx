@@ -2,6 +2,7 @@ import API from "@/utils/axios";
 import { useEffect, useState, type ReactNode } from "react";
 import { Navigate } from "react-router-dom"
 import {ScaleLoader} from "react-spinners"
+import {useAuth0} from "@auth0/auth0-react"
 
 type Props = {
   children: ReactNode;
@@ -17,8 +18,14 @@ const override:any = {
 
 const Guard = ({ children }: Props) => {
   const [auth, setAuth] = useState<any>(null)
+  const {isAuthenticated} = useAuth0()
 
   useEffect(() => {
+    if (isAuthenticated){
+      setAuth(true)
+      return
+    }
+    
     const checkLogin = async () => {
         try{
             const res = await API.get('/account/info')

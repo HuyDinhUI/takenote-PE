@@ -5,11 +5,20 @@ import { Button } from "./button"
 import { InputSearch } from "./input"
 import { IconMenu, IconHelpCircle, IconBell, IconUser, IconSettings, IconLock, IconLogout, IconPalette, IconSun, IconMoon } from '@tabler/icons-react'
 import { DropdownMenu, type MenuItem } from "./dropdown";
+import API from "@/utils/axios";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
-    const handleSelect = (value: string) => {
-        console.log("Selected:", value);
-    };
+    const navigate = useNavigate()
+
+    const Logout = async () => {
+        try{
+            const res = await API.delete('/users/logout') 
+            navigate("/auth/login")
+        }
+        catch(error){}
+    }
+    
     const items: MenuItem[] = [
         { label: 'Profile', icon: <IconUser size={16} /> },
         {
@@ -21,7 +30,7 @@ export const Header = () => {
             ]
         },
         { separator: true },
-        { label: 'Logout', icon: <IconLogout size={16} />, onClick: () => console.log('') },
+        { label: 'Logout', icon: <IconLogout size={16} />, onClick: () => Logout()},
     ];
 
     
@@ -43,7 +52,7 @@ export const Header = () => {
                     items={items}
                     size="md"
                 />
-            </div>
+            </div> 
         </div>
     )
 }
