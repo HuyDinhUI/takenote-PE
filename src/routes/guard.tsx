@@ -31,7 +31,7 @@ const Guard = ({ children }: Props) => {
             const res = await API.get('/account/info')
 
             if (res.data){
-                console.log(res.data)
+                localStorage.setItem('username',res.data.username)
                 setAuth(true)
             } else setAuth(false)
         } catch(error){

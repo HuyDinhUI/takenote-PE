@@ -8,7 +8,7 @@ import { privateRoutes } from './routes/privateRoutes';
 function App() {
   return (
     <Router>
-      <div className='App'>
+      <div className='App h-full w-full'>
         <Routes>
           {publicRoutes.map((route,idx) => (
             <Route key={idx} path={route.path} element={route.element}/>
