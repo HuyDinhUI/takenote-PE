@@ -11,7 +11,7 @@ const Boards = () => {
         <div className="flex-1 min-h-[100vh] pt-4 px-30">
             {/* Starred */}
             <BoardContainer icon={<Star color="gray" />} title="Starred boards">
-                <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
+                <Board href="/b/123/mytrello" type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
             </BoardContainer>
             {/* Viewed */}
             <BoardContainer icon={<Clock color="gray" />} title="Recently viewed">
@@ -40,7 +40,6 @@ const Boards = () => {
             <BoardWorkspace label="guest workspace" icon={<Info size={18} />}>
                 <BoardContainer icon={<ChartColumnBig />} title="Trello Templates">
                     <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
-
                 </BoardContainer>
             </BoardWorkspace>
         </div>

@@ -23,6 +23,6 @@ export const privateRoutes = [
     },
     {
         path:'b/:id/:name',
-        element: <Guard><BoardLayout><Board/></BoardLayout></Guard>
+        element:<BoardLayout><Board/></BoardLayout>
     }
 ]
