@@ -32,7 +32,7 @@ export const Column = ({ label, children, id, card }: ColummsProps) => {
 
     return (
         <div ref={setNodeRef} style={style} {...attributes}  className="w-80 h-full">
-            <div {...listeners} className="bg-amber-100 p-3 rounded-xl cursor-pointer">
+            <div {...listeners} className="bg-amber-100 dark:bg-column p-3 rounded-xl cursor-pointer">
                 <header className="flex justify-between items-center px-3 pb-5">
                     <label className="font-bold">{label}</label>
                     <Ellipsis size={18} />
@@ -41,7 +41,7 @@ export const Column = ({ label, children, id, card }: ColummsProps) => {
                     {children}
                 </div>
                 <footer >
-                    <button className="flex w-full items-center p-2 gap-2 opacity-70 hover:bg-amber-500/50 rounded-md cursor-pointer">
+                    <button className="flex w-full items-center p-2 gap-2 opacity-70 hover:bg-amber-500/50 dark:hover:bg-white/10 rounded-md cursor-pointer">
                         <Plus size={18} />
                         <label>Add a card</label>
                     </button>

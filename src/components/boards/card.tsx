@@ -3,6 +3,7 @@ import { SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-
 import { Edit } from "lucide-react"
 import { useState } from "react"
 import { CSS } from "@dnd-kit/utilities"
+import CheckboxDemo from "../ui/checkbox"
 
 type CardProps = {
     item: CardType
@@ -28,9 +29,10 @@ export const Card = ({ item }: CardProps) => {
 
     const [checked, setChecked] = useState<boolean>(item.status)
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="bg-white py-2 px-3 rounded-md flex justify-between items-center gap-2 group shadow-sm cursor-pointer border-2 border-white/0 hover:border-amber-800">
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="bg-white dark:bg-card py-2 px-3 rounded-md flex justify-between items-center gap-2 group shadow-sm cursor-pointer border-2 border-white/0 hover:border-amber-800">
             <div className="flex items-center gap-2 group">
-                <input onChange={(e) => setChecked(e.target.checked)} type="checkbox" checked={checked} className={`animate-checkbox ${checked ? "block" : "hidden group-hover:block"}`}></input>
+                {/* <input onChange={(e) => setChecked(e.target.checked)} type="checkbox" checked={checked} className={`animate-checkbox ${checked ? "block" : "hidden group-hover:block"}`}></input> */}
+                <CheckboxDemo onCheckedChange={(checked) => setChecked(checked === true)} checked={checked}/>
                 <label className="">{item.label}</label>
             </div>
             <div>

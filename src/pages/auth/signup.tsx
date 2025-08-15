@@ -38,7 +38,7 @@ const Signup = () => {
 
     return (
         <div className="h-[100vh] shadow-lg flex items-center justify-center">
-            <div className="w-200 min-h-[100px] rounded-xl shadow-md flex overflow-hidden">
+            <div className="w-200 min-h-[100px] rounded-xl shadow-md flex overflow-hidden dark:ring-1">
                 <form className="w-full p-5" onSubmit={handleSubmit(submitSignup)}>
                     <div className="text-center mb-5">
                         <h1 className="font-bold text-2xl">Welcome to Trello</h1>
@@ -82,7 +82,7 @@ const Signup = () => {
                         </p>
                     </div>
                 </form>
-                <div className="w-full bg-gray-50 flex justify-center items-end">
+                <div className="w-full bg-gray-50 dark:bg-black/20 flex justify-center items-end">
                     <img src={bg_login}></img>
                 </div>
             </div>

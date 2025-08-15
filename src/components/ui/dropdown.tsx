@@ -1,5 +1,5 @@
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Check, ChevronRight } from 'lucide-react';
 import clsx from 'classnames';
 
@@ -10,7 +10,7 @@ export type MenuItem =
       shortcut?: string;
       disabled?: boolean;
       onClick?: () => void;
-      items?: MenuItem[]; // submenu
+      children?: MenuItem[]; // submenu
     }
   | { separator: true };
 type DropdownSize = 'sm' | 'md' | 'lg'
@@ -37,14 +37,15 @@ export const DropdownMenu = ({ trigger, items, size = 'md' }: DropdownMenuProps)
       <Dropdown.Portal>
         <Dropdown.Content
           className={clsx(sizeClass[size],"bg-white dark:bg-gray-800 rounded shadow-lg p-1 z-50")}
-          sideOffset={5}
+          sideOffset={12}
+
         >
           {items.map((item, index) => {
             if ('separator' in item) {
               return <Dropdown.Separator key={index} className="h-px my-1 bg-gray-200 dark:bg-gray-700" />;
             }
 
-            if (item.items) {
+            if (item.children) {
               return (
                 <Dropdown.Sub key={index}>
                   <Dropdown.SubTrigger
@@ -57,8 +58,8 @@ export const DropdownMenu = ({ trigger, items, size = 'md' }: DropdownMenuProps)
                     <span className="flex-1">{item.label}</span>
                     <ChevronRight className="w-4 h-4 opacity-50" />
                   </Dropdown.SubTrigger>
-                  <Dropdown.SubContent className="bg-white dark:bg-gray-800 rounded shadow-lg p-1 z-50">
-                    {item.items.map((subItem, subIndex) => (
+                  <Dropdown.SubContent sideOffset={7} className="bg-white dark:bg-gray-800 rounded shadow-lg p-1 z-50">
+                    {item.children.map((subItem, subIndex) => (
                       'separator' in subItem ? (
                         <Dropdown.Separator key={subIndex} className="h-px my-1 bg-gray-200 dark:bg-gray-700" />
                       ) : (
@@ -104,4 +105,94 @@ export const DropdownMenu = ({ trigger, items, size = 'md' }: DropdownMenuProps)
       </Dropdown.Portal>
     </Dropdown.Root>
   );
+};
+
+
+export const DropdownMenu2 = ({ trigger, items, size = 'md' }: DropdownMenuProps) => {
+    const [history, setHistory] = useState<MenuItem[][]>([items]);
+    const [isOpen, setIsOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    const currentMenu = history[history.length - 1];
+    console.log(currentMenu)
+
+    const handleClick = (item: MenuItem) => {
+
+        if ("separator" in item){
+          return
+        }
+
+        setHistory((prev) => [...prev, item.children!]);
+
+    };
+
+    const goBack = () => {
+        setHistory((prev) => prev.slice(0, prev.length - 1));
+    };
+
+    // Ẩn menu khi click ra ngoài
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+                setHistory([items]); // reset về menu gốc khi đóng
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    
+
+    return (
+        <div ref={menuRef}  className="relative inline-block">
+            {/* <button
+                onClick={() => setIsOpen((prev) => !prev)}
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+            >
+                Menu
+            </button> */}
+            <div className='h-full w-full' onClick={() => setIsOpen((prev) => !prev)}>{trigger}</div>
+
+            {isOpen && (
+                <ul className="absolute mt-1 bg-white shadow-lg border rounded min-w-[200px] z-50 p-2">
+                    {history.length > 1 && (
+                        <li
+                            onClick={goBack}
+                            className="px-4 py-2 cursor-pointer hover:bg-gray-100 font-semibold"
+                        >
+                            ← Back
+                        </li>
+                    )}
+                    {currentMenu.map((item, index) => {
+                        if("separator" in item) {
+                          return 
+                        }
+                        
+                        if (item.children) {
+                            return <li
+                                key={index}
+                                onClick={() => handleClick(item)}
+                                className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex justify-between"
+                            >
+                                {item.label}
+                                <span>▶</span>
+                            </li>
+                        }
+                        else {
+                            return <li
+                                key={index}
+                                className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex justify-between"
+                            >
+                                {item.label}
+                            </li>
+                        }
+
+                    })}
+                </ul>
+            )}
+        </div>
+    );
 };

@@ -82,7 +82,7 @@ export const CreateBoard = () => {
 
     }
     return (
-        <div className="w-[300px] p-1">
+        <div className="w-[300px] p-1 dark:text-white">
             <div className="py-2 flex justify-center items-center">
                 <span className="font-bold">Create board</span>
             </div>
@@ -159,7 +159,7 @@ export const CreateBoard = () => {
                     </div>
                 </div>
                 <Button className='w-full justify-center font-bold' variant='primary' title='Create' disabled={title ? false : true}/>
-                <Button title='Start with a template' size='sm' className='w-full justify-center mt-2 font-bold'/>
+                <Button title='Start with a template' size='sm' className='w-full justify-center mt-2 font-bold dark:text-black'/>
             </form>
         </div>
     )

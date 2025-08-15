@@ -51,7 +51,7 @@ const sidebarItems: SidebarItem[] = [
 const MainLayout = ({ children }: Props) => {
 
   return (
-    <div className="wrapper">
+    <div className="wrapper dark:bg-background">
       <Header />
       <div className="flex overflow-y-scroll max-h-[90vh] pt-5">
         <Sidebar items={sidebarItems} />

@@ -13,10 +13,10 @@ type ButtonProps = {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>; // Thêm các props như onClick, type,...
 
 const variantClass: Record<ButtonVariant, string> = {
-    default: 'bg-gray-100 hover:bg-gray-200',
+    default: 'bg-gray-100 hover:bg-gray-200 dark:hover:bg-gray-200/50',
     primary: 'bg-blue-500 hover:bg-blue-600 text-white',
     danger: 'bg-red-500 hover:bg-red-600 text-white',
-    dark: 'bg-black hover:bg-black/80 text-white',
+    dark: 'bg-black hover:bg-black/80 text-white dark:bg-white dark:text-black dark:hover:bg-gray-200',
     outline: 'ring ring-gray-200 hover:bg-gray-50',
     icon: 'hover:bg-gray-600/20'
 };

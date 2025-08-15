@@ -36,8 +36,8 @@ const Login = () => {
   };
 
   return (
-    <div className="h-[100vh] shadow-lg flex items-center justify-center">
-      <div className="w-200 min-h-[100px] rounded-xl shadow-md flex overflow-hidden">
+    <div className="h-[100vh] shadow-lg flex items-center justify-center dark:bg-background">
+      <div className="w-200 min-h-[100px] rounded-xl ring ring-gray-200 flex overflow-hidden dark:ring-1">
         <form className="w-full p-5" onSubmit={handleSubmit(submitLogin)}>
           <div className="text-center mb-5">
             <h1 className="font-bold text-2xl">Welcome back</h1>
@@ -61,7 +61,7 @@ const Login = () => {
           </div>
           <Button type="submit" className="w-full justify-center rounded-sm" variant="dark" size="md" title="Login" />
           <div className="relative border-t-1 border-gray-200 w-full mt-10">
-            <p className="absolute -top-3.5 px-2 right-[50%] translate-x-[50%] bg-white font-light">Or continue with</p>
+            <p className="absolute -top-3.5 px-2 right-[50%] translate-x-[50%] bg-white font-light dark:bg-background">Or continue with</p>
             <div className="pt-10 pb-5">
               <Button type="button" onClick={() =>
                 (window.location.href = "https://localhost:5024/v1/auth/google")
@@ -72,7 +72,7 @@ const Login = () => {
             </p>
           </div>
         </form>
-        <div className="w-full bg-gray-50 flex justify-center items-end">
+        <div className="w-full bg-gray-50 dark:bg-black/20 flex justify-center items-end">
           <img src={bg_login}></img>
         </div>
       </div>

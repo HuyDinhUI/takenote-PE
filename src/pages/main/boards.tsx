@@ -25,12 +25,12 @@ const Boards = () => {
                     <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
                     <Popover
                         trigger={
-                            <Button className="justify-center rounded-md" title="Create new board"/>
+                            <Button className="justify-center rounded-md dark:bg-card" title="Create new board"/>
                         }
                         side="right"
                         sideOffset={10}
                     >
-                        <div className="text-sm text-gray-800">
+                        <div className="text-sm text-gray-800 dark:bg-background">
                             <CreateBoard/>
                         </div>
                     </Popover>

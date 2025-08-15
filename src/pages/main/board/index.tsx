@@ -10,6 +10,38 @@ import { Card, ListCard } from "@/components/boards/card"
 import cloneDeep from "lodash/cloneDeep"
 
 
+const InboxData: Columns[] = [{
+    id: 'inbox',
+    label: 'Inbox',
+    card: [
+        {
+            id: 'card-8',
+            label: 'task 1',
+            status: false,
+            columnId: '1'
+        },
+        {
+            id: 'card-9',
+            label: 'task 2',
+            status: false,
+            columnId: '1'
+        },
+        {
+            id: 'card-10',
+            label: 'task 3',
+            status: false,
+            columnId: '1'
+        },
+        {
+            id: 'card-11',
+            label: 'task 4',
+            status: false,
+            columnId: '1'
+        },
+    ]
+}]
+
+
 const ColumnsData: Columns[] = [
     {
         id: '1',
@@ -195,52 +227,70 @@ const Board = () => {
 
     return (
         <div className="flex h-full gap-5">
-            <div className="h-full min-w-80 ring ring-gray-200 rounded-xl">
-                <header className="p-5 flex justify-between">
-                    <div className="flex items-center gap-2">
-                        <Inbox size={18} />
-                        <label className="font-bold">Inbox</label>
+            <DndContext>
+
+                {/* Inbox */}
+
+                <div className="h-full bg-blue-100 dark:bg-blue-900 min-w-80 rounded-xl overflow-hidden">
+                    <header className="p-5 bg-blue-50/30 dark:bg-blue-950/50 flex justify-between ">
+                        <div className="flex items-center gap-2">
+                            <Inbox size={18} />
+                            <label className="font-bold">Inbox</label>
+                        </div>
+                        <div className="flex items-center">
+                            <Button size="ic" variant="icon" icon={<Bell size={18} />} />
+                            <Button size="ic" variant="icon" icon={<Filter size={18} />} />
+                            <Button size="ic" variant="icon" icon={<Ellipsis size={18} />} />
+                        </div>
+                    </header>
+                    <div className="w-full">
+                        <DndContext
+                            onDragEnd={HandleDragEnd}
+                            onDragStart={HandleDragStart}
+                            onDragOver={HandleDragOver}
+                            sensors={sensors}
+                            collisionDetection={closestCorners}>
+                            
+                        </DndContext>
                     </div>
-                    <div className="flex items-center">
-                        <Button size="ic" variant="icon" icon={<Bell size={18} />} />
-                        <Button size="ic" variant="icon" icon={<Filter size={18} />} />
-                        <Button size="ic" variant="icon" icon={<Ellipsis size={18} />} />
-                    </div>
-                </header>
-            </div>
-            <div className="flex-1 h-full ring ring-gray-200 rounded-xl flex flex-col overflow-hidden" style={{ backgroundImage: "url('https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg')" }}>
-                <header className="p-5 flex justify-between bg-black/20 text-white">
-                    <div className="flex items-center gap-2">
-                        <label className="font-bold">My Trello</label>
-                    </div>
-                    <div className="flex items-center">
-                        <Button size="ic" variant="icon" icon={<Filter size={18} />} />
-                        <Button size="ic" variant="icon" icon={<Star size={18} />} />
-                        <Button size="ic" variant="icon" icon={<Ellipsis size={18} />} />
-                    </div>
-                </header>
-                <div className="w-ful flex-1 relative overflow-x-auto scroll-smooth">
-                    <DndContext
-                        onDragEnd={HandleDragEnd}
-                        onDragStart={HandleDragStart}
-                        onDragOver={HandleDragOver}
-                        sensors={sensors}
-                        collisionDetection={closestCorners}>
-                        <ListColumns columns={BoardData} />
-                        <DragOverlay dropAnimation={dropAnimation}>
-                            {(!activeDragItemId && null)}
-                            {(activeDragItemId && activeDragItemType === TYPE_ACTIVE_DND.COLUMN)
-                                &&
-                                <Column label={activeDragItemData.label} id={activeDragItemData.id} card={activeDragItemData.card}>
-                                    <ListCard items={activeDragItemData.card} />
-                                </Column>}
-                            {(activeDragItemId && activeDragItemType === TYPE_ACTIVE_DND.CARD)
-                                &&
-                                <Card item={activeDragItemData} />}
-                        </DragOverlay>
-                    </DndContext>
                 </div>
-            </div>
+
+                {/* Boards */}
+
+                <div className="flex-1 h-full rounded-xl flex flex-col overflow-hidden" style={{ backgroundImage: "url('https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg')" }}>
+                    <header className="p-5 flex justify-between bg-black/20 text-white">
+                        <div className="flex items-center gap-2">
+                            <label className="font-bold">My Trello</label>
+                        </div>
+                        <div className="flex items-center">
+                            <Button size="ic" variant="icon" icon={<Filter size={18} />} />
+                            <Button size="ic" variant="icon" icon={<Star size={18} />} />
+                            <Button size="ic" variant="icon" icon={<Ellipsis size={18} />} />
+                        </div>
+                    </header>
+                    <div className="w-ful flex-1 relative overflow-x-auto scroll-smooth">
+                        <DndContext
+                            onDragEnd={HandleDragEnd}
+                            onDragStart={HandleDragStart}
+                            onDragOver={HandleDragOver}
+                            sensors={sensors}
+                            collisionDetection={closestCorners}>
+                            <ListColumns columns={BoardData} />
+                            <DragOverlay dropAnimation={dropAnimation}>
+                                {(!activeDragItemId && null)}
+                                {(activeDragItemId && activeDragItemType === TYPE_ACTIVE_DND.COLUMN)
+                                    &&
+                                    <Column label={activeDragItemData.label} id={activeDragItemData.id} card={activeDragItemData.card}>
+                                        <ListCard items={activeDragItemData.card} />
+                                    </Column>}
+                                {(activeDragItemId && activeDragItemType === TYPE_ACTIVE_DND.CARD)
+                                    &&
+                                    <Card item={activeDragItemData} />}
+                            </DragOverlay>
+                        </DndContext>
+                    </div>
+                </div>
+            </DndContext>
         </div>
     )
 }

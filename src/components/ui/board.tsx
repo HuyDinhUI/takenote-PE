@@ -44,8 +44,8 @@ export const Board = ({ type, title, img = '', href = '' }: BoardItemProps) => {
                             </button>
                         </div>
                     </div>
-                    <div className="p-2 flex items-center">
-                        <span className="">{title}</span>
+                    <div className="p-2 flex items-center dark:bg-card">
+                        <span className="dark:text-white">{title}</span>
                     </div>
                 </div>
             </Link>
@@ -85,7 +85,7 @@ export const BoardWorkspace = ({ label, children, icon }: BoardWorkspaceProps) =
     return (
         <div className="">
             <div className="flex gap-3 mb-5 items-center">
-                <label className="uppercase font-bold text-gray-700">{label}</label>
+                <label className="uppercase font-bold text-gray-700 dark:text-white/50">{label}</label>
                 {icon && icon}
             </div>
             {children}
