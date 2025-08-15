@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-type ButtonVariant = 'default' | 'primary' | 'danger' | 'outline' | 'dark' | 'icon';
-type ButtonSize = 'sm' | 'md' | 'lg' | 'ic';
+type ButtonVariant = 'default' | 'primary' | 'danger' | 'outline' | 'dark' | 'icon' | 'transparent';
+type ButtonSize = 'sm' | 'md' | 'lg' | 'ic' | 'lb';
 
 type ButtonProps = {
     title?: string;
@@ -18,14 +18,16 @@ const variantClass: Record<ButtonVariant, string> = {
     danger: 'bg-red-500 hover:bg-red-600 text-white',
     dark: 'bg-black hover:bg-black/80 text-white dark:bg-white dark:text-black dark:hover:bg-gray-200',
     outline: 'ring ring-gray-200 hover:bg-gray-50',
-    icon: 'hover:bg-gray-600/20'
+    icon: 'hover:bg-gray-600/20',
+    transparent: 'bg-transparent'
 };
 
 const sizeClass: Record<ButtonSize, string> = {
     sm: 'px-3 py-1 text-sm',
     md: 'px-4 py-2 text-base',
     lg: 'px-5 py-3 text-lg',
-    ic: 'p-2'
+    ic: 'p-2',
+    lb: ''
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

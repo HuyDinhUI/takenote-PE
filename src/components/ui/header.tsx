@@ -37,7 +37,7 @@ export const Header = () => {
 
 
     const items: MenuItem[] = [
-        { label: username, icon: <AvatarDemo size="45px" /> },
+        { label: username, icon: <AvatarDemo size="25px" /> },
         { label: 'Settings', icon: <Settings2 size={16} /> },
         { label: 'Help', icon: <HelpCircle size={16} /> },
         { separator: true },
