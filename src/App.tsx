@@ -1,11 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { publicRoutes } from './routes/publicRoutes';
 import { privateRoutes } from './routes/privateRoutes';
+import { useEffect } from "react";
 
 function App() {
+   
+  useEffect(()=>{
+    if (localStorage.getItem('theme')){
+      document.documentElement.classList.add(localStorage.getItem('theme') ?? 'light');
+    }
+  },[])
+
   return (
     <Router>
       <div className='App h-full w-full'>

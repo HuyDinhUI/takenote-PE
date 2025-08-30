@@ -11,4 +11,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    port: 3000,   // cố định port, ví dụ 3000
+    strictPort: true // nếu port 3000 bận -> báo lỗi, không tự đổi
+  }
 })

@@ -1,4 +1,3 @@
-
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -118,33 +117,68 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-#root{
+#root {
   height: 100vh;
   width: 100vw;
 }
 
 
 
+
+
 @theme {
   --animate-checkbox: fade 0.5s ease-in-out;
+  --animate-fadeIn: fadeIn 300ms ease-out;
+  --animate-fadeOut: fadeOut 300ms ease-in;
+  --animate-zoomIn: zoomIn 300ms ease-out;
 
-  @keyframes fade{
+  @keyframes fade {
+
     0%,
     50% {
       opacity: 0;
-      
+
     }
 
     100% {
       opacity: 1;
-      
+
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      transform: scale(0);
+    }
+
+    to{
+      transform: scale(1);
     }
   }
 }
-
-

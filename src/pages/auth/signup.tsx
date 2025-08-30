@@ -4,7 +4,8 @@ import API from "@/utils/axios";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import bg_login from "@/assets/undraw_hello_ccwj.svg"
+import bg_dark from "@/assets/rm218-bb-07.jpg"
+import bg_light from "@/assets/v904-nunny-012.jpg"
 import { AlertDanger } from "@/components/ui/alert";
 import { toast } from "react-toastify";
 
@@ -18,14 +19,14 @@ const Signup = () => {
 
     const [error, setError] = useState<any>(undefined)
     const navigate = useNavigate();
-
+    const theme = localStorage.getItem('theme') ?? 'light'
 
 
     const submitSignup = async (data: any) => {
         console.log(data)
         try {
             const res = await API.post('/users/signup', data)
-            if (res.data){
+            if (res.data) {
                 console.log(res)
                 navigate('/auth/login')
                 toast.success('Sign up is success')
@@ -37,8 +38,10 @@ const Signup = () => {
     };
 
     return (
-        <div className="h-[100vh] shadow-lg flex items-center justify-center">
-            <div className="w-200 min-h-[100px] rounded-xl shadow-md flex overflow-hidden dark:ring-1">
+        <div 
+        className="h-[100vh] shadow-lg flex items-center justify-center bg-cover" 
+        style={theme === 'dark' ? { backgroundImage: `url("${bg_dark}")` } : { backgroundImage: `url("${bg_light}")` }}>
+            <div className="w-100 min-h-[100px] bg-white dark:bg-transparent dark:backdrop-blur-md dark:ring dark:ring-gray-500 rounded-xl shadow-md flex overflow-hidden">
                 <form className="w-full p-5" onSubmit={handleSubmit(submitSignup)}>
                     <div className="text-center mb-5">
                         <h1 className="font-bold text-2xl">Welcome to Trello</h1>
@@ -82,9 +85,7 @@ const Signup = () => {
                         </p>
                     </div>
                 </form>
-                <div className="w-full bg-gray-50 dark:bg-black/20 flex justify-center items-end">
-                    <img src={bg_login}></img>
-                </div>
+
             </div>
         </div>
     );

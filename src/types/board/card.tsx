@@ -1,7 +1,15 @@
-export type CardType = {
-    id: string,
-    label: string,
-    status: boolean,
-    columnId: string
+type checklist = {
+    label: string
+    checked: boolean
+}
 
+export type CardType = {
+    id: string
+    label: string
+    status: boolean
+    columnId: string
+    cover?: string
+    description?: string
+    attachments?:string
+    checklist?:checklist[]
 }

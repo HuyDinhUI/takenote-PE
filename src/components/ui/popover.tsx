@@ -1,6 +1,6 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils"; // hoặc dùng classnames nếu bạn thích
-import {X} from "lucide-react"
+import { X } from "lucide-react"
 
 type PopoverProps = {
   trigger: React.ReactNode;
@@ -36,9 +36,9 @@ export const Popover = ({
           )}
         >
           {children}
-          <PopoverPrimitive.Close className="absolute top-3 right-3 p-2 cursor-pointer hover:bg-gray-100" aria-label="Close">
-					<X size={15}/>
-				</PopoverPrimitive.Close>
+          <PopoverPrimitive.Close className="absolute top-3 right-3 p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10" aria-label="Close">
+            <X size={15} />
+          </PopoverPrimitive.Close>
         </PopoverPrimitive.Content>
       </PopoverPrimitive.Portal>
     </PopoverPrimitive.Root>

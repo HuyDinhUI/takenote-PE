@@ -10,38 +10,6 @@ import { Card, ListCard } from "@/components/boards/card"
 import cloneDeep from "lodash/cloneDeep"
 
 
-const InboxData: Columns[] = [{
-    id: 'inbox',
-    label: 'Inbox',
-    card: [
-        {
-            id: 'card-8',
-            label: 'task 1',
-            status: false,
-            columnId: '1'
-        },
-        {
-            id: 'card-9',
-            label: 'task 2',
-            status: false,
-            columnId: '1'
-        },
-        {
-            id: 'card-10',
-            label: 'task 3',
-            status: false,
-            columnId: '1'
-        },
-        {
-            id: 'card-11',
-            label: 'task 4',
-            status: false,
-            columnId: '1'
-        },
-    ]
-}]
-
-
 const ColumnsData: Columns[] = [
     {
         id: '1',
@@ -51,7 +19,11 @@ const ColumnsData: Columns[] = [
                 id: 'card-1',
                 label: 'task 1',
                 status: false,
-                columnId: '1'
+                columnId: '1',
+                cover:'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/960x579/28499e6a7654d65a1117428f2bc1aaf2/photo-1741812191037-96bb5f12010a.webp',
+                description:'asd',
+                attachments:'hgd',
+                checklist:[]
             },
             {
                 id: 'card-2',
@@ -231,7 +203,7 @@ const Board = () => {
 
                 {/* Inbox */}
 
-                <div className="h-full bg-blue-100 dark:bg-blue-900 min-w-80 rounded-xl overflow-hidden">
+                {/* <div className="h-full bg-blue-100 dark:bg-blue-900 min-w-80 rounded-xl overflow-hidden">
                     <header className="p-5 bg-blue-50/30 dark:bg-blue-950/50 flex justify-between ">
                         <div className="flex items-center gap-2">
                             <Inbox size={18} />
@@ -253,7 +225,7 @@ const Board = () => {
                             
                         </DndContext>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Boards */}
 

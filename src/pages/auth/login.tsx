@@ -2,12 +2,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { GoogleIcon } from "@/assets/icon/index";
 import API from "@/utils/axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import bg_login from "@/assets/undraw_hello_ccwj.svg"
 import { AlertDanger } from "@/components/ui/alert";
-import { useAuth0 } from "@auth0/auth0-react";
+import bg_dark from "@/assets/rm218-bb-07.jpg"
+import bg_light from "@/assets/v904-nunny-012.jpg"
 
 const Login = () => {
   const {
@@ -18,7 +18,7 @@ const Login = () => {
 
   const [error, setError] = useState<any>(undefined)
   const navigate = useNavigate();
-  const {isAuthenticated} = useAuth0()
+  const theme = localStorage.getItem('theme') ?? 'light'
 
 
   const submitLogin = async (data: any) => {
@@ -36,8 +36,10 @@ const Login = () => {
   };
 
   return (
-    <div className="h-[100vh] shadow-lg flex items-center justify-center dark:bg-background">
-      <div className="w-200 min-h-[100px] rounded-xl ring ring-gray-200 flex overflow-hidden dark:ring-1">
+    <div 
+    className="h-[100vh] shadow-lg flex items-center justify-center bg-cover"
+    style={theme === 'dark' ? {backgroundImage:`url("${bg_dark}")`}:{backgroundImage:`url("${bg_light}")`}}>
+      <div className="w-100 min-h-[100px] rounded-xl bg-white dark:bg-transparent dark:backdrop-blur-md dark:ring dark:ring-gray-500 shadow-md flex overflow-hidden">
         <form className="w-full p-5" onSubmit={handleSubmit(submitLogin)}>
           <div className="text-center mb-5">
             <h1 className="font-bold text-2xl">Welcome back</h1>
@@ -60,8 +62,8 @@ const Login = () => {
             <Link className="absolute top-0 right-0" to={'/restpassword'}>Forgot your password ?</Link>
           </div>
           <Button type="submit" className="w-full justify-center rounded-sm" variant="dark" size="md" title="Login" />
-          <div className="relative border-t-1 border-gray-200 w-full mt-10">
-            <p className="absolute -top-3.5 px-2 right-[50%] translate-x-[50%] bg-white font-light dark:bg-background">Or continue with</p>
+          <div className="relative border-t-1 border-gray-200 w-full mt-10 dark:border-transparent">
+            <p className="absolute -top-3.5 px-2 right-[50%] translate-x-[50%] bg-white font-light dark:bg-transparent">Or continue with</p>
             <div className="pt-10 pb-5">
               <Button type="button" onClick={() =>
                 (window.location.href = "https://localhost:5024/v1/auth/google")
@@ -72,9 +74,7 @@ const Login = () => {
             </p>
           </div>
         </form>
-        <div className="w-full bg-gray-50 dark:bg-black/20 flex justify-center items-end">
-          <img src={bg_login}></img>
-        </div>
+        
       </div>
     </div>
   );
