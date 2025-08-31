@@ -5,11 +5,12 @@ type checklist = {
 
 export type CardType = {
     id: string
-    label: string
-    status: boolean
+    label?: string
+    status?: boolean
     columnId: string
     cover?: string
     description?: string
     attachments?:string
     checklist?:checklist[]
+    FE_placeholderCard?: boolean
 }

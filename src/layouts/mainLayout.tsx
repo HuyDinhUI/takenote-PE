@@ -38,7 +38,7 @@ const sidebarItems: SidebarItem[] = [
   {
     type: 'item',
     label: "Trello Workspace",
-    icon: <Rocket size={18} color="blue" />,
+    icon: <Rocket size={18} />,
     subItems: [
       { type: 'item', label: "Boards", href: "#", icon: <LayoutDashboard size={18} /> },
       { type: 'item', label: "Members", href: "#", icon: <Users2 size={18} /> },

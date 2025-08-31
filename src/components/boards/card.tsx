@@ -33,9 +33,14 @@ export const Card = ({ item }: CardProps) => {
 
     }
 
-    const [checked, setChecked] = useState<boolean>(item.status)
+    const [checked, setChecked] = useState<boolean | undefined>(item.status)
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="bg-white dark:bg-card rounded-md group shadow-sm cursor-pointer border-1 border-transparent hover:border-purple-800 overflow-hidden relative">
+        <div 
+        ref={setNodeRef} 
+        style={style} 
+        {...attributes} 
+        {...listeners} 
+        className={`bg-white dark:bg-card rounded-md group shadow-sm cursor-pointer border-1 border-transparent hover:border-purple-800 overflow-hidden relative ${item.FE_placeholderCard ? "opacity-0 h-0 p-0 mt-0 shadow-none border-none" : "opacity-100 mt-2"}`}>
             {/* cover */}
             {item.cover && <div className="h-35 bg-cover" style={{ backgroundImage: `url("${item.cover}")` }}>
             </div>}
@@ -72,10 +77,12 @@ type ListCardProps = {
     items: CardType[]
 }
 
+
+
 export const ListCard = ({ items }: ListCardProps) => {
     return (
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            <div className="flex flex-col gap-2">
+        <SortableContext items={items.map(item => item.id)} strategy={verticalListSortingStrategy}>
+            <div className="flex flex-col">
                 {items.map(item => (
                     <Card key={item.id} item={item} />
                 ))}

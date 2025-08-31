@@ -7,7 +7,8 @@ import { useEffect, useState } from "react"
 import { arrayMove } from "@dnd-kit/sortable"
 import { Column } from "@/components/boards/columns"
 import { Card, ListCard } from "@/components/boards/card"
-import cloneDeep from "lodash/cloneDeep"
+import {cloneDeep, isEmpty} from "lodash"
+import {generatePlaceholdeCard} from "@/utils/formatters"
 
 
 const ColumnsData: Columns[] = [
@@ -20,10 +21,10 @@ const ColumnsData: Columns[] = [
                 label: 'task 1',
                 status: false,
                 columnId: '1',
-                cover:'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/960x579/28499e6a7654d65a1117428f2bc1aaf2/photo-1741812191037-96bb5f12010a.webp',
-                description:'asd',
-                attachments:'hgd',
-                checklist:[]
+                cover: 'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/960x579/28499e6a7654d65a1117428f2bc1aaf2/photo-1741812191037-96bb5f12010a.webp',
+                description: 'asd',
+                attachments: 'hgd',
+                checklist: []
             },
             {
                 id: 'card-2',
@@ -80,6 +81,17 @@ const ColumnsData: Columns[] = [
                 columnId: '4'
             }
         ]
+    },
+    {
+        id: '5',
+        label: 'Empty',
+        card: [
+            {
+                id: '5-card-8',
+                FE_placeholderCard: true,
+                columnId: '5'
+            }
+        ]
     }
 ]
 
@@ -101,6 +113,7 @@ const Board = () => {
     const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null)
     const [activeDragItemType, setActiveDragItemType] = useState<string | null>(null)
     const [activeDragItemData, setActiveDragItemData] = useState<any>(null)
+    const [oldColumn, setOldColumn] = useState<Columns | null | undefined>(null)
 
     useEffect(() => {
 
@@ -115,6 +128,10 @@ const Board = () => {
         setActiveDragItemId(event?.active?.id)
         setActiveDragItemType(event?.active?.data?.current?.columnId ? TYPE_ACTIVE_DND.CARD : TYPE_ACTIVE_DND.COLUMN)
         setActiveDragItemData(event?.active?.data?.current)
+
+        if (event?.active?.data?.current?.columnId){
+            setOldColumn(findColumn(event?.active?.id))
+        }
     }
 
     const HandleDragOver = (event: any) => {
@@ -148,21 +165,33 @@ const Board = () => {
             const nextActiveColumn = nextColumns.find(column => column.id === activeColumn.id)
             const nextOverColumn = nextColumns.find(column => column.id === overColumn.id)
 
+
+            // xoá card đang kéo khỏi column chứa card đang kéo
             if (nextActiveColumn) {
                 nextActiveColumn.card = nextActiveColumn.card.filter(card => card.id !== activeDrappingCardId)
+
+                if (isEmpty(nextActiveColumn.card)){
+                    nextActiveColumn.card = [generatePlaceholdeCard(nextActiveColumn)]
+                }
+                
             }
 
+
+            // thêm card đang kéo vào column được thả vào
             if (nextOverColumn) {
-                nextOverColumn.card = nextOverColumn.card.filter(card => card.id !== activeDrappingCardId)
+                // nextOverColumn.card = nextOverColumn.card.filter(card => card.id !== activeDrappingCardId)
                 nextOverColumn.card.splice(newCardIndex, 0, activeDrappingCardData)
-                console.log('overcardIndex:', overCardIndex)
-                console.log('isbelow:', isBelowOverItem)
-                console.log('modifier:', modifier)
-                console.log('new index card:', newCardIndex)
-                console.log(nextColumns)
+
+                nextOverColumn.card = nextOverColumn.card.filter(card => !card.FE_placeholderCard)
+                
+                // console.log('overcardIndex:', overCardIndex)
+                // console.log('isbelow:', isBelowOverItem)
+                // console.log('modifier:', modifier)
+                // console.log('new index card:', newCardIndex)
+                // console.log(nextColumns)
             }
 
-
+           
             return nextColumns
         })
 
@@ -172,15 +201,17 @@ const Board = () => {
     const HandleDragEnd = (event: any) => {
         // console.log(event)
 
-        if (activeDragItemType === TYPE_ACTIVE_DND.CARD) {
-            return
-        }
 
         const { active, over } = event
 
         if (!over) return
 
-        if (active.id !== over.id) {
+        if (activeDragItemType === TYPE_ACTIVE_DND.CARD) {
+            console.log(BoardData)
+            
+        }
+
+        if (activeDragItemType === TYPE_ACTIVE_DND.COLUMN) {
             const oldIndex = BoardData.findIndex(c => c.id === active.id)
             const newIndex = BoardData.findIndex(c => c.id === over.id)
 
@@ -191,6 +222,7 @@ const Board = () => {
         setActiveDragItemId(null)
         setActiveDragItemType(null)
         setActiveDragItemData(null)
+        setOldColumn(null)
     }
 
     const dropAnimation = {
