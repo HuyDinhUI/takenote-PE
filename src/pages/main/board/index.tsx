@@ -7,93 +7,95 @@ import { useEffect, useState } from "react"
 import { arrayMove } from "@dnd-kit/sortable"
 import { Column } from "@/components/boards/columns"
 import { Card, ListCard } from "@/components/boards/card"
-import {cloneDeep, isEmpty} from "lodash"
-import {generatePlaceholdeCard} from "@/utils/formatters"
+import { cloneDeep, isEmpty } from "lodash"
+import { generatePlaceholdeCard } from "@/utils/formatters"
+import API from "@/utils/axios"
+import { useParams } from "react-router-dom"
 
 
-const ColumnsData: Columns[] = [
-    {
-        id: '1',
-        label: 'Today',
-        card: [
-            {
-                id: 'card-1',
-                label: 'task 1',
-                status: false,
-                columnId: '1',
-                cover: 'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/960x579/28499e6a7654d65a1117428f2bc1aaf2/photo-1741812191037-96bb5f12010a.webp',
-                description: 'asd',
-                attachments: 'hgd',
-                checklist: []
-            },
-            {
-                id: 'card-2',
-                label: 'task 2',
-                status: false,
-                columnId: '1'
-            },
-            {
-                id: 'card-3',
-                label: 'task 3',
-                status: true,
-                columnId: '1'
-            },
-            {
-                id: 'card-4',
-                label: 'task 4',
-                status: true,
-                columnId: '1'
-            },
-        ]
-    },
-    {
-        id: '2',
-        label: 'Done',
-        card: [
-            {
-                id: 'card-5',
-                label: 'task 5',
-                status: true,
-                columnId: '2'
-            }
-        ]
-    },
-    {
-        id: '3',
-        label: 'Yesterday',
-        card: [
-            {
-                id: 'card-6',
-                label: 'task 6',
-                status: true,
-                columnId: '3'
-            }
-        ]
-    },
-    {
-        id: '4',
-        label: 'This week',
-        card: [
-            {
-                id: 'card-7',
-                label: 'task 7',
-                status: true,
-                columnId: '4'
-            }
-        ]
-    },
-    {
-        id: '5',
-        label: 'Empty',
-        card: [
-            {
-                id: '5-card-8',
-                FE_placeholderCard: true,
-                columnId: '5'
-            }
-        ]
-    }
-]
+// const ColumnsData: Columns[] = [
+//     {
+//         _id: '1',
+//         label: 'Today',
+//         card: [
+//             {
+//                 _id: 'card-1',
+//                 label: 'task 1',
+//                 status: false,
+//                 columnId: '1',
+//                 cover: 'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/960x579/28499e6a7654d65a1117428f2bc1aaf2/photo-1741812191037-96bb5f12010a.webp',
+//                 description: 'asd',
+//                 attachments: 'hgd',
+//                 checklist: []
+//             },
+//             {
+//                 _id: 'card-2',
+//                 label: 'task 2',
+//                 status: false,
+//                 columnId: '1'
+//             },
+//             {
+//                 _id: 'card-3',
+//                 label: 'task 3',
+//                 status: true,
+//                 columnId: '1'
+//             },
+//             {
+//                 _id: 'card-4',
+//                 label: 'task 4',
+//                 status: true,
+//                 columnId: '1'
+//             },
+//         ]
+//     },
+//     {
+//         _id: '2',
+//         label: 'Done',
+//         card: [
+//             {
+//                 _id: 'card-5',
+//                 label: 'task 5',
+//                 status: true,
+//                 columnId: '2'
+//             }
+//         ]
+//     },
+//     {
+//         _id: '3',
+//         label: 'Yesterday',
+//         card: [
+//             {
+//                 _id: 'card-6',
+//                 label: 'task 6',
+//                 status: true,
+//                 columnId: '3'
+//             }
+//         ]
+//     },
+//     {
+//         _id: '4',
+//         label: 'This week',
+//         card: [
+//             {
+//                 _id: 'card-7',
+//                 label: 'task 7',
+//                 status: true,
+//                 columnId: '4'
+//             }
+//         ]
+//     },
+//     {
+//         _id: '5',
+//         label: 'Empty',
+//         card: [
+//             {
+//                 _id: '5-card-8',
+//                 FE_placeholderCard: true,
+//                 columnId: '5'
+//             }
+//         ]
+//     }
+// ]
 
 const TYPE_ACTIVE_DND = {
     COLUMN: 'T_COLUMN',
@@ -108,28 +110,41 @@ const Board = () => {
     })
     const sensors = useSensors(pointerSensor)
 
-    const [BoardData, SetBoardData] = useState<Columns[]>(ColumnsData)
+    const [ColumnData, SetColumnData] = useState<Columns[]>()
+    const [BoardData, SetBoardData] = useState<any>()
 
     const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null)
     const [activeDragItemType, setActiveDragItemType] = useState<string | null>(null)
     const [activeDragItemData, setActiveDragItemData] = useState<any>(null)
     const [oldColumn, setOldColumn] = useState<Columns | null | undefined>(null)
 
-    useEffect(() => {
+    const { id } = useParams()
 
+    useEffect(() => {
+        const getBoard = async () => {
+            try {
+                const res = await API.get(`/boards/${id}`)
+                console.log(res.data)
+                SetBoardData(res.data)
+                SetColumnData(res.data.columns)
+            }
+            catch (error) { }
+        }
+
+        getBoard()
     }, [])
 
     const findColumn = (cardId: any) => {
-        return BoardData.find(column => column.card.map(card => card.id)?.includes(cardId))
+        return ColumnData?.find(column => column.cards.map(card => card._id)?.includes(cardId))
     }
 
     const HandleDragStart = (event: any) => {
-        // console.log(event)
+        console.log(event)
         setActiveDragItemId(event?.active?.id)
         setActiveDragItemType(event?.active?.data?.current?.columnId ? TYPE_ACTIVE_DND.CARD : TYPE_ACTIVE_DND.COLUMN)
         setActiveDragItemData(event?.active?.data?.current)
 
-        if (event?.active?.data?.current?.columnId){
+        if (event?.active?.data?.current?.columnId) {
             setOldColumn(findColumn(event?.active?.id))
         }
     }
@@ -153,37 +168,37 @@ const Board = () => {
         if (!activeColumn || !overColumn) return
 
 
-        SetBoardData(prevColumn => {
-            const overCardIndex = overColumn?.card?.findIndex(card => card.id === overCardId)
+        SetColumnData(prevColumn => {
+            const overCardIndex = overColumn?.cards?.findIndex(card => card._id === overCardId)
 
             let newCardIndex: number
             const isBelowOverItem = active.rect.current.translated && active.rect.current.translated.top > over.rect.top + over.rect.height
             const modifier = isBelowOverItem ? 1 : 0
-            newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.card?.length + 1
+            newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
 
             const nextColumns = cloneDeep(prevColumn)
-            const nextActiveColumn = nextColumns.find(column => column.id === activeColumn.id)
-            const nextOverColumn = nextColumns.find(column => column.id === overColumn.id)
+            const nextActiveColumn = nextColumns?.find(column => column._id === activeColumn._id)
+            const nextOverColumn = nextColumns?.find(column => column._id === overColumn._id)
 
 
             // xoá card đang kéo khỏi column chứa card đang kéo
             if (nextActiveColumn) {
-                nextActiveColumn.card = nextActiveColumn.card.filter(card => card.id !== activeDrappingCardId)
+                nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDrappingCardId)
 
-                if (isEmpty(nextActiveColumn.card)){
-                    nextActiveColumn.card = [generatePlaceholdeCard(nextActiveColumn)]
+                if (isEmpty(nextActiveColumn.cards)) {
+                    nextActiveColumn.cards = [generatePlaceholdeCard(nextActiveColumn)]
                 }
-                
+
             }
 
 
             // thêm card đang kéo vào column được thả vào
             if (nextOverColumn) {
                 // nextOverColumn.card = nextOverColumn.card.filter(card => card.id !== activeDrappingCardId)
-                nextOverColumn.card.splice(newCardIndex, 0, activeDrappingCardData)
+                nextOverColumn.cards.splice(newCardIndex, 0, activeDrappingCardData)
 
-                nextOverColumn.card = nextOverColumn.card.filter(card => !card.FE_placeholderCard)
-                
+                nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_placeholderCard)
+
                 // console.log('overcardIndex:', overCardIndex)
                 // console.log('isbelow:', isBelowOverItem)
                 // console.log('modifier:', modifier)
@@ -191,7 +206,7 @@ const Board = () => {
                 // console.log(nextColumns)
             }
 
-           
+
             return nextColumns
         })
 
@@ -199,7 +214,7 @@ const Board = () => {
     }
 
     const HandleDragEnd = (event: any) => {
-        // console.log(event)
+        console.log(event)
 
 
         const { active, over } = event
@@ -207,16 +222,20 @@ const Board = () => {
         if (!over) return
 
         if (activeDragItemType === TYPE_ACTIVE_DND.CARD) {
-            console.log(BoardData)
-            
+            console.log(ColumnData)
+
         }
 
-        if (activeDragItemType === TYPE_ACTIVE_DND.COLUMN) {
-            const oldIndex = BoardData.findIndex(c => c.id === active.id)
-            const newIndex = BoardData.findIndex(c => c.id === over.id)
+        if (activeDragItemType === TYPE_ACTIVE_DND.COLUMN && ColumnData) {
 
-            const NewBoardData = arrayMove(BoardData, oldIndex, newIndex)
-            SetBoardData(NewBoardData)
+            const oldIndex = ColumnData?.findIndex(c => c._id === active.id)
+            const newIndex = ColumnData?.findIndex(c => c._id === over.id)
+
+            const NewColumnData = arrayMove(ColumnData, oldIndex, newIndex)
+            SetColumnData(NewColumnData)
+
+
+
         }
 
         setActiveDragItemId(null)
@@ -261,10 +280,10 @@ const Board = () => {
 
                 {/* Boards */}
 
-                <div className="flex-1 h-full rounded-xl flex flex-col overflow-hidden" style={{ backgroundImage: "url('https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg')" }}>
+                <div className="flex-1 h-full rounded-xl flex flex-col overflow-hidden bg-cover bg-no-repeat" style={{ backgroundImage: `url('${BoardData?.cover}')` }}>
                     <header className="p-5 flex justify-between bg-black/20 text-white">
                         <div className="flex items-center gap-2">
-                            <label className="font-bold">My Trello</label>
+                            <label className="font-bold">{BoardData?.title}</label>
                         </div>
                         <div className="flex items-center">
                             <Button size="ic" variant="icon" icon={<Filter size={18} />} />
@@ -279,7 +298,7 @@ const Board = () => {
                             onDragOver={HandleDragOver}
                             sensors={sensors}
                             collisionDetection={closestCorners}>
-                            <ListColumns columns={BoardData} />
+                            <ListColumns columns={ColumnData ? ColumnData : []} />
                             <DragOverlay dropAnimation={dropAnimation}>
                                 {(!activeDragItemId && null)}
                                 {(activeDragItemId && activeDragItemType === TYPE_ACTIVE_DND.COLUMN)

@@ -120,9 +120,9 @@ export const Column = ({ label, children, id, card }: ColummsProps) => {
 
 
 export type Columns = {
-    id: string,
-    label: string,
-    card: CardType[]
+    _id: string,
+    title: string,
+    cards: CardType[]
 }
 
 type ListColumnsProps = {
@@ -133,11 +133,11 @@ export const ListColumns = ({ columns }: ListColumnsProps) => {
     const [openCreate, setOpenCreate] = useState(false)
 
     return (
-        <SortableContext items={columns} strategy={horizontalListSortingStrategy}>
+        <SortableContext items={columns.map(c => c._id)} strategy={horizontalListSortingStrategy}>
             <div className="flex p-5 gap-3 h-full absolute">
                 {columns.map(col => (
-                    <Column key={col.id} id={col.id} label={col.label} card={col.card}>
-                        <ListCard items={col.card} />
+                    <Column key={col._id} id={col._id} label={col.title} card={col.cards}>
+                        <ListCard items={col.cards} />
                     </Column>
                 ))}
                 <div className="w-80">

@@ -20,7 +20,7 @@ export const Card = ({ item }: CardProps) => {
         transform,
         transition,
         isDragging
-    } = useSortable({ id: item.id, data: { ...item } })
+    } = useSortable({ id: item._id, data: { ...item } })
 
     const style = {
         touchAction: 'none',
@@ -81,10 +81,10 @@ type ListCardProps = {
 
 export const ListCard = ({ items }: ListCardProps) => {
     return (
-        <SortableContext items={items.map(item => item.id)} strategy={verticalListSortingStrategy}>
+        <SortableContext items={items.map(item => item._id)} strategy={verticalListSortingStrategy}>
             <div className="flex flex-col">
                 {items.map(item => (
-                    <Card key={item.id} item={item} />
+                    <Card key={item._id} item={item} />
                 ))}
             </div>
         </SortableContext>

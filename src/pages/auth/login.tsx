@@ -24,7 +24,7 @@ const Login = () => {
   const submitLogin = async (data: any) => {
     console.log(data)
     try {
-      const res = await API.post('/users/login', data)
+      const res = await API.post('/authorization/login', data)
       if (res.data.role === "customer") {
         navigate('/' + res.data.username + '/boards')
       } else navigate('/admin')

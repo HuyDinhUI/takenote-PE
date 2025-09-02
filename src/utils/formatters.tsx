@@ -1,7 +1,7 @@
 export function generatePlaceholdeCard(column: any) {
     return {
-        id: column.id+'-placeholder-card',
+        _id: column._id+'-placeholder-card',
         FE_placeholderCard: true,
-        columnId: column.id
+        columnId: column._id
     }
 }

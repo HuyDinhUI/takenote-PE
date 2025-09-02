@@ -22,7 +22,9 @@ export const privateRoutes = [
         element: <Guard><MainLayout><Home /></MainLayout></Guard>
     },
     {
-        path:'b/:id/:name',
-        element:<BoardLayout><Board/></BoardLayout>
+        path: 'b/:id/:name',
+        element: <Guard>
+            <BoardLayout><Board /></BoardLayout>
+        </Guard>
     }
 ]

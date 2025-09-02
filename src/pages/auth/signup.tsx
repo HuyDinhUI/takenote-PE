@@ -25,7 +25,7 @@ const Signup = () => {
     const submitSignup = async (data: any) => {
         console.log(data)
         try {
-            const res = await API.post('/users/signup', data)
+            const res = await API.post('/authorization/signup', data)
             if (res.data) {
                 console.log(res)
                 navigate('/auth/login')

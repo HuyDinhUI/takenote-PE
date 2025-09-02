@@ -4,6 +4,8 @@ import { Check, Ellipsis, ChevronDown, EarthLock, Earth, Users } from 'lucide-re
 import { useForm } from 'react-hook-form';
 import { Popover } from './ui/popover';
 import { Button } from './ui/button';
+import API from '@/utils/axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const listBackgroundImg = [
@@ -50,36 +52,44 @@ const listBackgroundColor = [
 const visibility_list = [
     {
         icon: <EarthLock />,
-        value: 'Private',
+        value: 'private',
         title: 'Private',
         des: 'Board members and Trello Workspace Workspace admins can see and edit this board'
     },
     {
         icon: <Users />,
-        value: 'Workspace',
+        value: 'workspace',
         title: 'Workspace',
         des: 'All members of the Trello Workspace Workspace can see and edit this board'
     },
     {
         icon: <Earth />,
-        value: 'Public',
+        value: 'public',
         title: 'Public',
         des: 'Anyone on the internet can see this board. Only board members can edit'
     },
 ]
+
 export const CreateBoard = () => {
     const [selected, setSelected] = useState(listBackgroundImg[0].img)
-    const [visibility, setVisibility] = useState('Workspace')
+    const [visibility, setVisibility] = useState('workspace')
     const [title, setTitle] = useState<string>()
-    const {
-        register,
-        handleSubmit,
-        formState: { errors }
-    } = useForm()
+    const navigate = useNavigate()
+    
+    const submit = async () => {
 
-    const [error, setError] = useState()
-    const submitLogin = (data: any) => {
+        const data = {
+            title,
+            visibility,
+            cover: selected
+        }
 
+        try{
+            const res = await API.post('/boards',data)
+            navigate(`/b/${res.data.newData._id}/${res.data.newData.title}`)
+
+        }
+        catch (error) {}
     }
     return (
         <div className="w-[300px] p-1 dark:text-white">
@@ -119,7 +129,7 @@ export const CreateBoard = () => {
                     </ul>
                 </div>
             </div>
-            <form onSubmit={handleSubmit(submitLogin)} className='mt-3'>
+            <div className='mt-3'>
                 <div>
                     <div className='grid gap-2'>
                         <label>Board title</label>
@@ -158,9 +168,9 @@ export const CreateBoard = () => {
                         </Popover>
                     </div>
                 </div>
-                <Button className='w-full justify-center font-bold' variant='primary' title='Create' disabled={title ? false : true}/>
+                <Button onClick={() => submit()} className='w-full justify-center font-bold' variant='primary' title='Create' disabled={title ? false : true}/>
                 <Button title='Start with a template' size='sm' className='w-full justify-center mt-2 font-bold dark:text-black'/>
-            </form>
+            </div>
         </div>
     )
 }

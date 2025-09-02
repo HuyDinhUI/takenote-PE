@@ -4,7 +4,7 @@ type checklist = {
 }
 
 export type CardType = {
-    id: string
+    _id: string
     label?: string
     status?: boolean
     columnId: string

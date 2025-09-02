@@ -2,27 +2,44 @@ import { CreateBoard } from "@/components/create-board"
 import { Board, BoardContainer, BoardWorkspace } from "@/components/ui/board"
 import { Button } from "@/components/ui/button"
 import { Popover } from "@/components/ui/popover"
+import API from "@/utils/axios"
 import { Clock, Rocket, Star, Info, ChartColumnBig } from "lucide-react"
+import { useEffect, useState } from "react"
 
 
 const Boards = () => {
-    console.log('boards')
+    const [board,setBoard] = useState<any>(null)
+
+    useEffect(() => {
+        const getBoards = async () => {
+            try{
+                const res = await API.get('/boards')
+                setBoard(res.data)
+            }
+            catch (error) {}
+        }
+
+        getBoards()
+    }, [])
     return (
         <div className="flex-1 min-h-[100vh] pt-4 px-30">
             {/* Starred */}
-            <BoardContainer icon={<Star color="gray" />} title="Starred boards">
+            {/* <BoardContainer icon={<Star color="gray" />} title="Starred boards">
                 <Board href="/b/123/mytrello" type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
-            </BoardContainer>
+            </BoardContainer> */}
             {/* Viewed */}
-            <BoardContainer icon={<Clock color="gray" />} title="Recently viewed">
+            {/* <BoardContainer icon={<Clock color="gray" />} title="Recently viewed">
                 <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
                 <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
-            </BoardContainer>
+            </BoardContainer> */}
             {/* Your Workspace */}
             <BoardWorkspace label="your workspace">
                 <BoardContainer icon={<Rocket />} title="Trello Workspace">
-                    <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
-                    <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
+                    {/* <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
+                    <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} /> */}
+                    {board?.map((b:any) => {
+                        return <Board href={`/b/${b._id}/${b.title}`} key={b._id} type="primary" title={b.title} img={b.cover}/>
+                    })}
                     <Popover
                         trigger={
                             <Button className="justify-center rounded-md dark:bg-card" title="Create new board"/>
@@ -37,11 +54,11 @@ const Boards = () => {
                 </BoardContainer>
             </BoardWorkspace>
             {/* Guest Workspace */}
-            <BoardWorkspace label="guest workspace" icon={<Info size={18} />}>
+            {/* <BoardWorkspace label="guest workspace" icon={<Info size={18} />}>
                 <BoardContainer icon={<ChartColumnBig />} title="Trello Templates">
                     <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
                 </BoardContainer>
-            </BoardWorkspace>
+            </BoardWorkspace> */}
         </div>
     )
 }

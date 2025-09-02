@@ -11,7 +11,7 @@ type BoardVariant = 'default' | 'primary'
 export type BoardItemProps = {
     type: BoardVariant
     title?: string
-    img?: ReactNode
+    img?: string
     href?: string
 }
 
@@ -32,7 +32,7 @@ export const Board = ({ type, title, img = '', href = '' }: BoardItemProps) => {
         <div className="board shadow-sm rounded-md overflow-hidden">
             <Link to={href}>
                 <div className="flex flex-col">
-                    <div className="h-[72px] w-full" style={{ backgroundImage: `url(${img})` }}>
+                    <div className="h-[72px] w-full bg-cover bg-no-repeat" style={{ backgroundImage: `url('${img}')` }}>
                         <div className="h-full w-full hover:bg-black/10 group overflow-hidden relative">
                             <button onClick={(e) => {
                                 e.preventDefault();

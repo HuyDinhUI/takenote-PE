@@ -39,7 +39,7 @@ export const Header = () => {
 
     const Logout = async () => {
         try {
-            const res = await API.delete('/users/logout')
+            const res = await API.delete('/authorization/logout')
             toast.success('Log out is success')
             localStorage.removeItem('username')
             navigate("/auth/login")
