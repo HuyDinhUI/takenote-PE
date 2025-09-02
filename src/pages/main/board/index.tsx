@@ -13,89 +13,7 @@ import API from "@/utils/axios"
 import { useParams } from "react-router-dom"
 
 
-// const ColumnsData: Columns[] = [
-//     {
-//         _id: '1',
-//         label: 'Today',
-//         card: [
-//             {
-//                 _id: 'card-1',
-//                 label: 'task 1',
-//                 status: false,
-//                 columnId: '1',
-//                 cover: 'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/960x579/28499e6a7654d65a1117428f2bc1aaf2/photo-1741812191037-96bb5f12010a.webp',
-//                 description: 'asd',
-//                 attachments: 'hgd',
-//                 checklist: []
-//             },
-//             {
-//                 _id: 'card-2',
-//                 label: 'task 2',
-//                 status: false,
-//                 columnId: '1'
-//             },
-//             {
-//                 _id: 'card-3',
-//                 label: 'task 3',
-//                 status: true,
-//                 columnId: '1'
-//             },
-//             {
-//                 _id: 'card-4',
-//                 label: 'task 4',
-//                 status: true,
-//                 columnId: '1'
-//             },
-//         ]
-//     },
-//     {
-//         _id: '2',
-//         label: 'Done',
-//         card: [
-//             {
-//                 _id: 'card-5',
-//                 label: 'task 5',
-//                 status: true,
-//                 columnId: '2'
-//             }
-//         ]
-//     },
-//     {
-//         _id: '3',
-//         label: 'Yesterday',
-//         card: [
-//             {
-//                 _id: 'card-6',
-//                 label: 'task 6',
-//                 status: true,
-//                 columnId: '3'
-//             }
-//         ]
-//     },
-//     {
-//         _id: '4',
-//         label: 'This week',
-//         card: [
-//             {
-//                 _id: 'card-7',
-//                 label: 'task 7',
-//                 status: true,
-//                 columnId: '4'
-//             }
-//         ]
-//     },
-//     {
-//         _id: '5',
-//         label: 'Empty',
-//         card: [
-//             {
-//                 _id: '5-card-8',
-//                 FE_placeholderCard: true,
-//                 columnId: '5'
-//             }
-//         ]
-//     }
-// ]
+
 
 const TYPE_ACTIVE_DND = {
     COLUMN: 'T_COLUMN',
@@ -120,17 +38,17 @@ const Board = () => {
 
     const { id } = useParams()
 
-    useEffect(() => {
-        const getBoard = async () => {
-            try {
-                const res = await API.get(`/boards/${id}`)
-                console.log(res.data)
-                SetBoardData(res.data)
-                SetColumnData(res.data.columns)
-            }
-            catch (error) { }
+    const getBoard = async () => {
+        try {
+            const res = await API.get(`/boards/${id}`)
+            console.log(res.data)
+            SetBoardData(res.data)
+            SetColumnData(res.data.columns)
         }
+        catch (error) { }
+    }
 
+    useEffect(() => {
         getBoard()
     }, [])
 
@@ -248,6 +166,39 @@ const Board = () => {
         sideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: '0.5' } } })
     }
 
+    const handleCreateColumn = async (title: string) => {
+
+        const data = {
+            title,
+            boardId: id
+        }
+
+        try {
+            const res = await API.post('/column', data)
+            console.log(res.data)
+            getBoard()
+        }
+        catch (error) { }
+
+    }
+
+    const handleCreateCard = async (label: string, columnId: string) => {
+        const data = {
+            label,
+            columnId
+        }
+
+        console.log(data)
+
+        try {
+            const res = await API.post('/card', data)
+            console.log(res.data)
+            getBoard()
+        }
+        catch (error) { }
+
+    }
+
     return (
         <div className="flex h-full gap-5">
             <DndContext>
@@ -298,12 +249,15 @@ const Board = () => {
                             onDragOver={HandleDragOver}
                             sensors={sensors}
                             collisionDetection={closestCorners}>
-                            <ListColumns columns={ColumnData ? ColumnData : []} />
+                            <ListColumns
+                                handleCreateCard={handleCreateCard}
+                                handleCreateColumn={handleCreateColumn}
+                                columns={ColumnData ? ColumnData : []} />
                             <DragOverlay dropAnimation={dropAnimation}>
                                 {(!activeDragItemId && null)}
                                 {(activeDragItemId && activeDragItemType === TYPE_ACTIVE_DND.COLUMN)
                                     &&
-                                    <Column label={activeDragItemData.label} id={activeDragItemData.id} card={activeDragItemData.card}>
+                                    <Column handleCreateCard={handleCreateCard} label={activeDragItemData.label} id={activeDragItemData.id} card={activeDragItemData.card}>
                                         <ListCard items={activeDragItemData.card} />
                                     </Column>}
                                 {(activeDragItemId && activeDragItemType === TYPE_ACTIVE_DND.CARD)

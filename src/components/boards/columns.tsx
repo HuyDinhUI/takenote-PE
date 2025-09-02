@@ -7,17 +7,20 @@ import { ListCard } from "./card"
 import { Button } from "../ui/button"
 import { DropdownMenu } from "../ui/dropdown"
 import type { MenuItem } from "@/types/menu-item/menu-item-type"
+import { useParams } from "react-router-dom"
+import API from "@/utils/axios"
 
 
 
 type ColummsProps = {
     label: string,
     children: ReactNode,
-    id: string
+    id: string,
+    handleCreateCard: (label: string, columnId: string) => void
     card: CardType[]
 }
 
-export const Column = ({ label, children, id, card }: ColummsProps) => {
+export const Column = ({ label, children, id, card, handleCreateCard }: ColummsProps) => {
 
     const ActionsBoardItems: MenuItem[] = [
 
@@ -62,6 +65,8 @@ export const Column = ({ label, children, id, card }: ColummsProps) => {
         opacity: isDragging ? 0.5 : undefined,
     }
 
+    const [labelInputCard, setLabelInputCard] = useState<string>('')
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (input.current && !input.current.contains(event.target as Node)) {
@@ -102,13 +107,13 @@ export const Column = ({ label, children, id, card }: ColummsProps) => {
                         </button>
                         )
                         : (
-                            <form>
-                                <textarea autoFocus className="w-full resize-none p-2 rounded-md bg-white dark:bg-background shadow-md outline-blue-500" placeholder="Enter a title or past a link" />
+                            <div>
+                                <textarea onChange={(e) => setLabelInputCard(e.target.value)} autoFocus className="w-full resize-none p-2 rounded-md bg-white dark:bg-background shadow-md outline-blue-500" placeholder="Enter a title or past a link" />
                                 <div className="w-full flex gap-2 mt-2 justify-start">
-                                    <Button variant="primary" title="Add card" />
+                                    <Button onClick={() => handleCreateCard(labelInputCard, id)} variant="primary" title="Add card" />
                                     <Button onClick={() => setOpenCreate(false)} variant="transparent" icon={<X />}></Button>
                                 </div>
-                            </form>
+                            </div>
                         )
                     }
                 </footer>
@@ -126,17 +131,20 @@ export type Columns = {
 }
 
 type ListColumnsProps = {
+    handleCreateColumn: (title: string) => void
+    handleCreateCard: (label: string, columnId: string) => void
     columns: Columns[]
 }
 
-export const ListColumns = ({ columns }: ListColumnsProps) => {
+export const ListColumns = ({ columns, handleCreateColumn, handleCreateCard }: ListColumnsProps) => {
     const [openCreate, setOpenCreate] = useState(false)
+    const [title, setTitle] = useState<string>('')
 
     return (
         <SortableContext items={columns.map(c => c._id)} strategy={horizontalListSortingStrategy}>
-            <div className="flex p-5 gap-3 h-full absolute">
+            <div className="flex p-5 gap-3 h-full">
                 {columns.map(col => (
-                    <Column key={col._id} id={col._id} label={col.title} card={col.cards}>
+                    <Column handleCreateCard={handleCreateCard} key={col._id} id={col._id} label={col.title} card={col.cards}>
                         <ListCard items={col.cards} />
                     </Column>
                 ))}
@@ -148,13 +156,13 @@ export const ListColumns = ({ columns }: ListColumnsProps) => {
                         </button>
                         )
                         : (
-                            <form className="bg-background p-3 rounded-xl h-[131px]">
-                                <textarea rows={1} className="w-full resize-none p-2 rounded-md bg-white dark:bg-background border-1 border-blue-500" placeholder="Enter a title or past a link" />
+                            <div className="bg-background p-3 rounded-xl h-[131px]">
+                                <textarea onChange={(e) => setTitle(e.target.value)} rows={1} className="w-full resize-none p-2 rounded-md bg-white dark:bg-background border-1 border-blue-500" placeholder="Enter a title or past a link" />
                                 <div className="w-full flex gap-2 mt-2 justify-start">
-                                    <Button variant="primary" title="Add list" />
+                                    <Button onClick={() => handleCreateColumn(title)} variant="primary" title="Add list" />
                                     <Button onClick={() => setOpenCreate(false)} variant="transparent" icon={<X />}></Button>
                                 </div>
-                            </form>
+                            </div>
                         )
                     }
                 </div>
