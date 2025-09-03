@@ -64,7 +64,7 @@ export const Card = ({ item }: CardProps) => {
                     <Paperclip size={15}/>
                     <span>1</span>
                 </div>}
-                {item.checklist && <div className="flex gap-1 items-center pb-2">
+                {item.checklist.length > 0 && <div className="flex gap-1 items-center pb-2">
                     <SquareCheckBig size={15}/>
                     <span>1/3</span>
                 </div>}

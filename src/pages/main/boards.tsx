@@ -47,7 +47,7 @@ const Boards = () => {
                         side="right"
                         sideOffset={10}
                     >
-                        <div className="text-sm text-gray-800 dark:bg-background">
+                        <div className="dark:bg-background">
                             <CreateBoard/>
                         </div>
                     </Popover>

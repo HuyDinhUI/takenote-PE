@@ -66,7 +66,7 @@ export const BoardContainer = ({ icon, title, children }: BoardContainerProps) =
                 {icon}
                 <span className="font-bold text-[15px]">{title}</span>
             </div>
-            <div className="grid grid-cols-4 gap-5">
+            <div className="grid grid-cols-4 grid-rows-4 gap-5">
                 {children}
             </div>
         </div>

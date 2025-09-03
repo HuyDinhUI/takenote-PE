@@ -146,6 +146,7 @@ export const ListColumns = ({ columns, handleCreateColumn, handleCreateCard }: L
                 {columns.map(col => (
                     <Column handleCreateCard={handleCreateCard} key={col._id} id={col._id} label={col.title} card={col.cards}>
                         <ListCard items={col.cards} />
+                        
                     </Column>
                 ))}
                 <div className="w-80">

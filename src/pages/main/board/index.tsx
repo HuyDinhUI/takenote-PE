@@ -43,7 +43,7 @@ const Board = () => {
             const res = await API.get(`/boards/${id}`)
             console.log(res.data)
             SetBoardData(res.data)
-            SetColumnData(res.data.columns)
+            SetColumnData(res.data.columnsOrder)
         }
         catch (error) { }
     }
@@ -78,9 +78,10 @@ const Board = () => {
         const { id: activeDrappingCardId, data: { current: activeDrappingCardData } } = active
         const { id: overCardId } = over
 
+        console.log(over)
+
         const activeColumn = findColumn(activeDrappingCardId)
         const overColumn = findColumn(overCardId)
-
 
 
         if (!activeColumn || !overColumn) return
@@ -131,7 +132,7 @@ const Board = () => {
 
     }
 
-    const HandleDragEnd = (event: any) => {
+    const HandleDragEnd = async (event: any) => {
         console.log(event)
 
 
@@ -141,6 +142,14 @@ const Board = () => {
 
         if (activeDragItemType === TYPE_ACTIVE_DND.CARD) {
             console.log(ColumnData)
+
+            
+            console.log({boardId: id, columns: ColumnData?.find(c => c.cards.find(card => card.FE_placeholderCard))?.cards.filter(card => !card.FE_placeholderCard)})
+
+            try{
+                const res = await API.put('/card/updateOrderAndPosition',{boardId: id, columns: ColumnData})
+            }
+            catch (error) {}
 
         }
 
@@ -152,6 +161,11 @@ const Board = () => {
             const NewColumnData = arrayMove(ColumnData, oldIndex, newIndex)
             SetColumnData(NewColumnData)
 
+            try{
+                const res = await API.put(`/boards/reorderColumn/${id}`,{ columnsOrder: NewColumnData.map(c => c._id)} )
+                console.log(res)
+            }
+            catch (error) {}
 
 
         }
@@ -231,7 +245,8 @@ const Board = () => {
 
                 {/* Boards */}
 
-                <div className="flex-1 h-full rounded-xl flex flex-col overflow-hidden bg-cover bg-no-repeat" style={{ backgroundImage: `url('${BoardData?.cover}')` }}>
+                <div className="relative flex-1 h-full rounded-xl flex flex-col overflow-hidden bg-cover bg-no-repeat bg-center" style={{ backgroundImage: `url('${BoardData?.cover}')` }}>
+                    
                     <header className="p-5 flex justify-between bg-black/20 text-white">
                         <div className="flex items-center gap-2">
                             <label className="font-bold">{BoardData?.title}</label>

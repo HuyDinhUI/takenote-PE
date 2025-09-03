@@ -11,19 +11,19 @@ import { useNavigate } from 'react-router-dom';
 const listBackgroundImg = [
     {
         id: '1',
-        img: 'https://images.unsplash.com/photo-1742156345582-b857d994c84e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDY2fDB8MXxjb2xsZWN0aW9ufDF8MzE3MDk5fHx8fHwyfHwxNzU0MjIzNTg0fA&ixlib=rb-4.1.0&q=80&w=400&quot;);'
+        img: 'https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
         id: '2',
-        img: 'https://images.unsplash.com/photo-1741812191037-96bb5f12010a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDY2fDB8MXxjb2xsZWN0aW9ufDJ8MzE3MDk5fHx8fHwyfHwxNzU0MjIzNTg0fA&ixlib=rb-4.1.0&q=80&w=400&quot;);'
+        img: 'https://images.unsplash.com/photo-1510279770292-4b34de9f5c23?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
         id: '3',
-        img: 'https://images.unsplash.com/photo-1742937163916-78fd07cc3b49?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDY2fDB8MXxjb2xsZWN0aW9ufDN8MzE3MDk5fHx8fHwyfHwxNzU0MjIzNTg0fA&ixlib=rb-4.1.0&q=80&w=400&quot;);'
+        img: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
         id: '4',
-        img: 'https://images.unsplash.com/photo-1742845918430-c6093f93f740?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDY2fDB8MXxjb2xsZWN0aW9ufDR8MzE3MDk5fHx8fHwyfHwxNzU0MjIzNTg0fA&ixlib=rb-4.1.0&q=80&w=400&quot;);'
+        img: 'https://plus.unsplash.com/premium_photo-1707229723342-1dc24b80ffd6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     }
 ]
 
@@ -86,7 +86,8 @@ export const CreateBoard = () => {
 
         try{
             const res = await API.post('/boards',data)
-            navigate(`/b/${res.data.newData._id}/${res.data.newData.title}`)
+            // navigate(`/b/${res.data.newData._id}/${res.data.newData.title}`)
+            window.location.href = `/b/${res.data.newData._id}/${res.data.newData.title}`
 
         }
         catch (error) {}
@@ -122,7 +123,7 @@ export const CreateBoard = () => {
                             </li>
                         ))}
                         <li className='h-[32px]'>
-                            <button className='cursor-pointer flex rounded-[3px] justify-center items-center bg-gray-100 h-full w-full'>
+                            <button className='cursor-pointer flex rounded-[3px] justify-center items-center bg-gray-100 dark:text-black h-full w-full'>
                                 <span><Ellipsis size={15} /></span>
                             </button>
                         </li>
