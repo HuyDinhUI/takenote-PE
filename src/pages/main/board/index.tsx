@@ -213,6 +213,16 @@ const Board = () => {
 
     }
 
+    const handleUpdateLabelColumn = async (title: string, boardId: string) => {
+
+        try {
+            await API.put('/column', { title, boardId })
+            getBoard()
+
+        }
+        catch (error) { }
+    }
+
     return (
         <div className="flex h-full gap-5">
             <DndContext>
@@ -245,7 +255,7 @@ const Board = () => {
 
                 {/* Boards */}
 
-                <div className="relative flex-1 h-full rounded-xl flex flex-col overflow-hidden bg-cover bg-no-repeat bg-center" style={{ backgroundImage: `url('${BoardData?.cover}')` }}>
+                <div className="relative flex-1 h-full flex flex-col overflow-hidden bg-cover bg-no-repeat bg-center" style={{ backgroundImage: `url('${BoardData?.cover}')` }}>
                     
                     <header className="p-5 flex justify-between bg-black/20 text-white">
                         <div className="flex items-center gap-2">
@@ -265,6 +275,7 @@ const Board = () => {
                             sensors={sensors}
                             collisionDetection={closestCorners}>
                             <ListColumns
+                                handleUpdateLabelColumn={handleUpdateLabelColumn}
                                 handleCreateCard={handleCreateCard}
                                 handleCreateColumn={handleCreateColumn}
                                 columns={ColumnData ? ColumnData : []} />
@@ -272,7 +283,7 @@ const Board = () => {
                                 {(!activeDragItemId && null)}
                                 {(activeDragItemId && activeDragItemType === TYPE_ACTIVE_DND.COLUMN)
                                     &&
-                                    <Column handleCreateCard={handleCreateCard} label={activeDragItemData.label} id={activeDragItemData.id} card={activeDragItemData.card}>
+                                    <Column handleUpdateLabelColumn={handleUpdateLabelColumn} handleCreateCard={handleCreateCard} label={activeDragItemData.label} id={activeDragItemData.id} card={activeDragItemData.card}>
                                         <ListCard items={activeDragItemData.card} />
                                     </Column>}
                                 {(activeDragItemId && activeDragItemType === TYPE_ACTIVE_DND.CARD)

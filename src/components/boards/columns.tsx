@@ -7,8 +7,7 @@ import { ListCard } from "./card"
 import { Button } from "../ui/button"
 import { DropdownMenu } from "../ui/dropdown"
 import type { MenuItem } from "@/types/menu-item/menu-item-type"
-import { useParams } from "react-router-dom"
-import API from "@/utils/axios"
+
 
 
 
@@ -17,10 +16,11 @@ type ColummsProps = {
     children: ReactNode,
     id: string,
     handleCreateCard: (label: string, columnId: string) => void
+    handleUpdateLabelColumn: (title: string, columnId: string) => void
     card: CardType[]
 }
 
-export const Column = ({ label, children, id, card, handleCreateCard }: ColummsProps) => {
+export const Column = ({ label, children, id, card, handleCreateCard, handleUpdateLabelColumn }: ColummsProps) => {
 
     const ActionsBoardItems: MenuItem[] = [
 
@@ -66,19 +66,23 @@ export const Column = ({ label, children, id, card, handleCreateCard }: ColummsP
     }
 
     const [labelInputCard, setLabelInputCard] = useState<string>('')
+    const [labelInputColumn, setLabelInputColumn] = useState<string>('')
 
     useEffect(() => {
+
         const handleClickOutside = (event: MouseEvent) => {
             if (input.current && !input.current.contains(event.target as Node)) {
+                handleUpdateLabelColumn(labelInputColumn, id)
                 setOpenEditLabel(false);
 
             }
         };
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    }, [labelInputColumn]);
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} className="w-80 h-full overflow-y-auto rounded-xl">
@@ -89,7 +93,7 @@ export const Column = ({ label, children, id, card, handleCreateCard }: ColummsP
                         (
                             <Button onClick={() => setOpenEditLabel(true)} variant="transparent" size="lb" className="font-bold w-full p-2" title={label} />)
                         : (
-                            <textarea ref={input} autoFocus onBlur={() => setOpenEditLabel(false)} className="w-full resize-none p-2 bg-white dark:bg-background outline-blue-500" rows={1}>{label}</textarea>
+                            <textarea defaultValue={label} onChange={(e) => setLabelInputColumn(e.target.value)} ref={input} autoFocus onBlur={() => setOpenEditLabel(false)} className="w-full resize-none p-2 bg-white dark:bg-background outline-blue-500" rows={1}></textarea>
                         )
                     }
 
@@ -133,10 +137,11 @@ export type Columns = {
 type ListColumnsProps = {
     handleCreateColumn: (title: string) => void
     handleCreateCard: (label: string, columnId: string) => void
+    handleUpdateLabelColumn: (title: string, columnId: string) => void
     columns: Columns[]
 }
 
-export const ListColumns = ({ columns, handleCreateColumn, handleCreateCard }: ListColumnsProps) => {
+export const ListColumns = ({ columns, handleCreateColumn, handleCreateCard, handleUpdateLabelColumn }: ListColumnsProps) => {
     const [openCreate, setOpenCreate] = useState(false)
     const [title, setTitle] = useState<string>('')
 
@@ -144,9 +149,9 @@ export const ListColumns = ({ columns, handleCreateColumn, handleCreateCard }: L
         <SortableContext items={columns.map(c => c._id)} strategy={horizontalListSortingStrategy}>
             <div className="flex p-5 gap-3 h-full">
                 {columns.map(col => (
-                    <Column handleCreateCard={handleCreateCard} key={col._id} id={col._id} label={col.title} card={col.cards}>
+                    <Column handleUpdateLabelColumn={handleUpdateLabelColumn} handleCreateCard={handleCreateCard} key={col._id} id={col._id} label={col.title} card={col.cards}>
                         <ListCard items={col.cards} />
-                        
+
                     </Column>
                 ))}
                 <div className="w-80">

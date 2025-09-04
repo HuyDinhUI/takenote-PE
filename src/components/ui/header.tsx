@@ -50,7 +50,7 @@ export const Header = () => {
     
 
     return (
-        <div className="flex px-3 py-2 items-center border-b-1">
+        <div className="flex px-3 py-2 items-center">
             <div className="w-[20%]">
                 <IconMenu />
 

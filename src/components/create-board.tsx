@@ -6,6 +6,7 @@ import { Popover } from './ui/popover';
 import { Button } from './ui/button';
 import API from '@/utils/axios';
 import { useNavigate } from 'react-router-dom';
+import { slugtify } from '@/utils/formatters';
 
 
 const listBackgroundImg = [
@@ -87,7 +88,7 @@ export const CreateBoard = () => {
         try{
             const res = await API.post('/boards',data)
             // navigate(`/b/${res.data.newData._id}/${res.data.newData.title}`)
-            window.location.href = `/b/${res.data.newData._id}/${res.data.newData.title}`
+            window.location.href = `/b/${res.data.newData._id}/${slugtify(res.data.newData.title)}`
 
         }
         catch (error) {}

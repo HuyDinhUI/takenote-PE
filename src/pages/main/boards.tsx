@@ -3,6 +3,7 @@ import { Board, BoardContainer, BoardWorkspace } from "@/components/ui/board"
 import { Button } from "@/components/ui/button"
 import { Popover } from "@/components/ui/popover"
 import API from "@/utils/axios"
+import { slugtify } from "@/utils/formatters"
 import { Clock, Rocket, Star, Info, ChartColumnBig } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -35,10 +36,9 @@ const Boards = () => {
             {/* Your Workspace */}
             <BoardWorkspace label="your workspace">
                 <BoardContainer icon={<Rocket />} title="Trello Workspace">
-                    {/* <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} />
-                    <Board type="primary" title="My trello board" img={'https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/gradients/rainbow.svg'} /> */}
+                    
                     {board?.map((b:any) => {
-                        return <Board href={`/b/${b._id}/${b.title}`} key={b._id} type="primary" title={b.title} img={b.cover}/>
+                        return <Board href={`/b/${b._id}/${slugtify(b.title)}`} key={b._id} type="primary" title={b.title} img={b.cover}/>
                     })}
                     <Popover
                         trigger={

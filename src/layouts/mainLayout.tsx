@@ -1,5 +1,6 @@
 import { Header } from "@/components/ui/header";
 import { Sidebar, type SidebarItem } from "@/components/ui/side-bar";
+import { slugtify } from "@/utils/formatters";
 import { LayoutDashboard, Settings, SquareKanban, Home, Users2, CreditCard, Rocket } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -9,7 +10,7 @@ type Props = {
 };
 
 const sidebarItems: SidebarItem[] = [
-  { type: 'item', label: "Board", icon: <SquareKanban size={18} />, href: `/${localStorage.getItem('username')}/boards`},
+  { type: 'item', label: "Board", icon: <SquareKanban size={18} />, href: `/${slugtify(localStorage.getItem('username') ?? '')}/boards`},
   {
     type: 'item',
     label: "Template",

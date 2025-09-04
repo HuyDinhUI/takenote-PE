@@ -10,7 +10,7 @@ const MainLayout = ({ children }: Props) => {
   return (
     <div className="wrapper h-full flex flex-col">
       <Header />
-      <div className="flex-1 py-5 px-5">
+      <div className="flex-1">
         {children}
       </div>
     </div>
