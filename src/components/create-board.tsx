@@ -4,7 +4,6 @@ import { Check, Ellipsis, ChevronDown, EarthLock, Earth, Users } from 'lucide-re
 import { Popover } from './ui/popover';
 import { Button } from './ui/button';
 import API from '@/utils/axios';
-import { useNavigate } from 'react-router-dom';
 import { slugtify } from '@/utils/formatters';
 import { toast } from 'react-toastify';
 
