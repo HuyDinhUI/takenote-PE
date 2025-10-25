@@ -75,7 +75,7 @@ export const CreateBoard = () => {
     const [selected, setSelected] = useState(listBackgroundImg[0].img)
     const [visibility, setVisibility] = useState('workspace')
     const [title, setTitle] = useState<string>()
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     
     const submit = async () => {
 

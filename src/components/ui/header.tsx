@@ -39,7 +39,7 @@ export const Header = () => {
 
     const Logout = async () => {
         try {
-            const res = await API.delete('/authorization/logout')
+            await API.delete('/authorization/logout')
             toast.success('Log out is success')
             localStorage.removeItem('username')
             navigate("/auth/login")
@@ -81,7 +81,7 @@ export const Header = () => {
                     label="Account"
                     side="bottom"
                     align="end"
-                    trigger={<Button variant="icon" size="ic" icon={<AvatarDemo size="25px" />} />}
+                    trigger={<Button variant="icon" size="ic" icon={<AvatarDemo/>} />}
                     items={AccountItems}
                     size="md"
 

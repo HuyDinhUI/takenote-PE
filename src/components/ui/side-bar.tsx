@@ -3,11 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import {
   ChevronDown,
   ChevronRight,
-  Home,
-  LayoutDashboard,
-  User,
-  Settings,
-  LogOut,
 } from "lucide-react";
 
 export type SidebarItem =

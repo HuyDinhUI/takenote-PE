@@ -37,6 +37,8 @@ const Board = () => {
     const [activeDragItemData, setActiveDragItemData] = useState<any>(null)
     const [oldColumn, setOldColumn] = useState<Columns | null | undefined>(null)
 
+    console.log(oldColumn)
+
     const { id } = useParams()
 
     const getBoard = async () => {

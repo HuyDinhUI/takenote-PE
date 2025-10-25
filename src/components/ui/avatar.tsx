@@ -2,11 +2,11 @@
 import * as Avatar from "@radix-ui/react-avatar";
 
 
-type AvatarProps = {
-    size?: string
-}
+// type AvatarProps = {
+//     size?: string
+// }
 
-const AvatarDemo = ({size}: AvatarProps) => (
+const AvatarDemo = () => (
 	<div className="flex gap-5">
 		<Avatar.Root className={`inline-flex select-none items-center size-[25px] justify-center overflow-hidden rounded-full`}>
 			<Avatar.Image
