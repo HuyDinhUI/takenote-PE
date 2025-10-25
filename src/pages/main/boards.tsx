@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button"
 import { Popover } from "@/components/ui/popover"
 import API from "@/utils/axios"
 import { slugtify } from "@/utils/formatters"
-import { Clock, Rocket, Star, Info, ChartColumnBig } from "lucide-react"
+import { Rocket } from "lucide-react"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 
 const Boards = () => {
@@ -17,7 +18,9 @@ const Boards = () => {
                 const res = await API.get('/boards')
                 setBoard(res.data)
             }
-            catch (error) {}
+            catch (err:any) {
+                toast.error(err?.response?.data?.message)
+            }
         }
 
         getBoards()

@@ -1,6 +1,6 @@
 import { ListColumns } from "@/components/boards/columns"
 import { Button } from "@/components/ui/button"
-import { Inbox, Bell, Filter, Ellipsis, Star } from "lucide-react"
+import { Filter, Ellipsis, Star } from "lucide-react"
 import type { Columns } from "@/components/boards/columns"
 import { DndContext, useSensor, useSensors, PointerSensor, DragOverlay, defaultDropAnimationSideEffects, closestCorners } from "@dnd-kit/core"
 import { useEffect, useState } from "react"
@@ -11,6 +11,7 @@ import { cloneDeep, isEmpty } from "lodash"
 import { generatePlaceholdeCard } from "@/utils/formatters"
 import API from "@/utils/axios"
 import { useParams } from "react-router-dom"
+import { toast } from "react-toastify"
 
 
 
@@ -45,7 +46,9 @@ const Board = () => {
             SetBoardData(res.data)
             SetColumnData(res.data.columnsOrder)
         }
-        catch (error) { }
+        catch (err:any) { 
+            toast.error(err?.response?.data?.message)
+        }
     }
 
     useEffect(() => {
@@ -90,10 +93,10 @@ const Board = () => {
         SetColumnData(prevColumn => {
             const overCardIndex = overColumn?.cards?.findIndex(card => card._id === overCardId)
 
-            let newCardIndex: number
+           
             const isBelowOverItem = active.rect.current.translated && active.rect.current.translated.top > over.rect.top + over.rect.height
             const modifier = isBelowOverItem ? 1 : 0
-            newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
+            const newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
 
             const nextColumns = cloneDeep(prevColumn)
             const nextActiveColumn = nextColumns?.find(column => column._id === activeColumn._id)
@@ -147,9 +150,11 @@ const Board = () => {
             console.log({boardId: id, columns: ColumnData?.find(c => c.cards.find(card => card.FE_placeholderCard))?.cards.filter(card => !card.FE_placeholderCard)})
 
             try{
-                const res = await API.put('/card/updateOrderAndPosition',{boardId: id, columns: ColumnData})
+                await API.put('/card/updateOrderAndPosition',{boardId: id, columns: ColumnData})
             }
-            catch (error) {}
+            catch (err:any) {
+                toast.error(err?.response?.data?.message)
+            }
 
         }
 
@@ -165,7 +170,9 @@ const Board = () => {
                 const res = await API.put(`/boards/reorderColumn/${id}`,{ columnsOrder: NewColumnData.map(c => c._id)} )
                 console.log(res)
             }
-            catch (error) {}
+            catch (err:any) {
+                toast.error(err?.response?.data?.message)
+            }
 
 
         }
@@ -192,7 +199,9 @@ const Board = () => {
             console.log(res.data)
             getBoard()
         }
-        catch (error) { }
+        catch (err:any) { 
+            toast.error(err?.response?.data?.message)
+        }
 
     }
 
@@ -209,7 +218,9 @@ const Board = () => {
             console.log(res.data)
             getBoard()
         }
-        catch (error) { }
+        catch (err:any) { 
+            toast.error(err?.response?.data?.message)
+        }
 
     }
 
@@ -220,7 +231,9 @@ const Board = () => {
             getBoard()
 
         }
-        catch (error) { }
+        catch (err:any) { 
+            toast.error(err?.response?.data?.message)
+        }
     }
 
     return (

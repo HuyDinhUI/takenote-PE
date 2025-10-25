@@ -13,7 +13,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm();
 
   const [error, setError] = useState<any>(undefined)

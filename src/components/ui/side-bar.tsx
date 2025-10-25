@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Link, matchPath, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   ChevronDown,
   ChevronRight,

@@ -37,7 +37,7 @@ type InputSize = 'sm' | 'md' | 'lg'
 type InputProps = {
     placeholder?: string,
     variant?: InputVariant,
-    size?: InputSize,
+    sizeOpt?: InputSize,
 } & React.InputHTMLAttributes<HTMLInputElement>
 
 const variantClass: Record<InputVariant, string> = {
@@ -57,18 +57,18 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {
             placeholder,
             variant = 'default',
-            size = 'md',
+            sizeOpt = 'md',
             className,
             ...rest
         },
         ref
     ) => {
         const base = 'w-full rounded-sm'
-        const finalClass = `${base} ${variantClass[variant]} ${sizeClass[size]} ${className}`
+        const finalClass = `${base} ${variantClass[variant]} ${sizeClass[sizeOpt]} ${className}`
 
         return (
             <input ref={ref} className={finalClass} {...rest} placeholder={placeholder}>
-
+                
             </input>
         )
     }

@@ -1,6 +1,5 @@
 
-import { Star } from "lucide-react"
-import { use, useState, type ReactNode } from "react"
+import { useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import {IconStar,IconStarFilled} from '@tabler/icons-react'
 

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import API from "@/utils/axios";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import bg_dark from "@/assets/rm218-bb-07.jpg"
@@ -14,7 +14,6 @@ const Signup = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
     } = useForm();
 
     const [error, setError] = useState<any>(undefined)

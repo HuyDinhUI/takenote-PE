@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx'
 import { Check, Ellipsis, ChevronDown, EarthLock, Earth, Users } from 'lucide-react'
-import { useForm } from 'react-hook-form';
 import { Popover } from './ui/popover';
 import { Button } from './ui/button';
 import API from '@/utils/axios';
 import { useNavigate } from 'react-router-dom';
 import { slugtify } from '@/utils/formatters';
+import { toast } from 'react-toastify';
 
 
 const listBackgroundImg = [
@@ -91,7 +91,9 @@ export const CreateBoard = () => {
             window.location.href = `/b/${res.data.newData._id}/${slugtify(res.data.newData.title)}`
 
         }
-        catch (error) {}
+        catch (err:any) {
+            toast.error(err?.response?.data?.message)
+        }
     }
     return (
         <div className="w-[300px] p-1 dark:text-white">
