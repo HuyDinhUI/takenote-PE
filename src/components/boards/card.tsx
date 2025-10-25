@@ -49,7 +49,7 @@ export const Card = ({ item }: CardProps) => {
 
             <div className="flex justify-between items-center gap-2 px-3 py-2">
                 <div className="flex flex-1 items-center gap-2 group">
-                    <CheckboxDemo onCheckedChange={(checked) => setChecked(checked === true)} checked={checked} />
+                    <CheckboxDemo classname={`animate-checkbox ${checked ? '' : 'hidden group-hover:block'}`} onCheckedChange={(checked) => setChecked(checked === true)} checked={checked} />
                     <Dialog trigger={<label>{item.label}</label>}>
                         <CardDetail data={item}/>
                     </Dialog>

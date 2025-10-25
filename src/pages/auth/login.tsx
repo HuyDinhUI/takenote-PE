@@ -27,9 +27,12 @@ const Login = () => {
       const res = await API.post('/authorization/login', data)
       if (res.data.role === "customer") {
         navigate('/' + res.data.username + '/boards')
-      } else navigate('/admin')
+      }
     }
     catch (error: any) {
+      if (error.status === 429) {
+        navigate('/error/429')
+      }
       setError(error.response?.data?.message)
     }
 

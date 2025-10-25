@@ -44,7 +44,9 @@ export const Header = () => {
             localStorage.removeItem('username')
             navigate("/auth/login")
         }
-        catch (error) { }
+        catch (error: any) { 
+            toast.error(error?.response?.data?.message)
+        }
     }
 
     
